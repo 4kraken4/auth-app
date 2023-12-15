@@ -8,6 +8,7 @@
 
 # Node
 /node_modules
+/package-lock.json
 npm-debug.log
 yarn-error.log
 
@@ -34,9 +35,50 @@ yarn-error.log
 /connect.lock
 /coverage
 /libpeerconnection.log
+npm-debug.log
+yarn-error.log
 testem.log
 /typings
+/reports
+# /src/environments/.env.*
 
 # System files
 .DS_Store
 Thumbs.db
+/src/translations/template.*
+
+# Cordova
+/www
+/plugins
+/platforms
+
+# Electron
+/dist-electron
+/dist-packages
+/electron.main.js
+
+# Maven
+/target
+/log
+
+# Common credential files
+**/credentials.json
+**/client_secrets.json
+**/client_secret.json
+creds
+*.dat
+password
+.httr-oauth
+
+# Private Files
+*.csv
+*.csv.gz
+*.tsv
+*.tsv.gz
+*.xlsx
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
