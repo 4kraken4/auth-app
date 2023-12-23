@@ -1,0 +1,15 @@
+{
+  "editor.cursorStyle": "line-thin",
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+  "editor.autoClosingComments": "always",
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "always"
+  },
+  "inlineChat.mode": "live",
+  "terminal.integrated.stickyScroll.enabled": true,
+  "editor.occurrencesHighlight": "multiFile",
+  "workbench.tree.enableStickyScroll": true
+}

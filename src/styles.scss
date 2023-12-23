@@ -1,7 +1,35 @@
-@import 'bootstrap/scss/bootstrap';
+@import "bootstrap/scss/bootstrap";
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+.btn-bd-primary {
+  --bd-pri-bg: #2a547b;
+  --bd-sec-rgb: #ffa800;
+
+  --bs-btn-font-weight: 600;
+  --bs-btn-color: var(--bs-white);
+  --bs-btn-bg: var(--bd-pri-bg);
+  --bs-btn-border-color: var(--bd-pri-bg);
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: var(--bd-sec-rgb);
+  --bs-btn-hover-border-color: var(--bd-sec-rgb);
+  --bs-btn-focus-shadow-rgb: var(--bd-sec-rgb);
+  --bs-btn-active-color: var(--bs-black);
+  --bs-btn-active-bg: var(--bd-sec-rgb);
+  --bs-btn-active-border-color: var(--bd-sec-rgb);
+}
+
+.btn-bd-outline-secondary {
+  --bd-pri-bg: #2a547b;
+  --bd-sec-rgb: #ffa800;
+
+  --bs-btn-font-weight: 600;
+  --bs-btn-color: var(--bd-pri-bg);
+  --bs-btn-bg: transparent;
+  --bs-btn-border-color: var(--bd-pri-bg);
+  --bs-btn-hover-color: #ffa800;
+  --bs-btn-hover-bg: transparent;
+  --bs-btn-hover-border-color: var(--bd-sec-rgb);
+  --bs-btn-focus-shadow-rgb: var(--bd-sec-rgb);
+  --bs-btn-active-color: var(--bs-white);
+  --bs-btn-active-bg: var(--bd-sec-rgb);
+  --bs-btn-active-border-color: var(--bd-sec-rgb);
 }
