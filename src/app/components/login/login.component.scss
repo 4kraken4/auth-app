@@ -3,7 +3,7 @@
 }
 
 .row-main {
-  height: 93.5vh;
+  height: 94vh;
 }
 
 .bg-main .blob-wrapper {
@@ -39,60 +39,25 @@
 
 .twriter-wrapper {
   color: #cccfff67;
-  max-width: 35rem;
-  font-size: 5.3rem !important;
-  margin-left: 15% !important;
+  font-size: 6rem !important;
   line-height: 1.2;
   letter-spacing: 0.1em;
-}
 
-@media (max-width: 1545px) {
-  .twriter-wrapper div {
-    font-size: 4.3rem;
-    margin-left: -15% !important;
-  }
-}
+  $breakpoints: 1760px 5.3rem, 1585px 5rem, 1535px 4.7rem, 1440px 4.4rem,
+    1385px 4.2rem, 1315px 4rem, 1265px 3.8rem, 1225px 3.6rem, 1165px 3.4rem,
+    1095px 3.2rem, 1045px 3rem, 990px 2.7rem, 955px 2.3rem, 835px 2rem;
 
-@media (max-width: 1335px) {
-  .twriter-wrapper div {
-    font-size: 4rem;
-  }
-}
-
-@media (max-width: 1265px) {
-  .twriter-wrapper div {
-    font-size: 3.7rem;
-  }
-}
-
-@media (max-width: 1160px) {
-  .twriter-wrapper div {
-    font-size: 3.4rem;
-  }
-}
-
-@media (max-width: 1095px) {
-  .twriter-wrapper div {
-    font-size: 3.1rem;
-  }
-}
-
-@media (max-width: 991px) {
-  .twriter-wrapper div {
-    font-size: 2.3rem;
-    letter-spacing: 0.07rem;
-  }
-}
-
-@media (max-width: 901px) {
-  .twriter-wrapper div {
-    font-size: 1.9rem;
+  @each $breakpoint, $font-size in $breakpoints {
+    @media (max-width: $breakpoint) {
+      div {
+        font-size: $font-size;
+      }
+    }
   }
 }
 
 #tw {
   font-family: "Montserrat", sans-serif;
-  min-height: 13rem;
 }
 
 .form-signin {
@@ -186,4 +151,8 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.login-logo {
+  width: 7.2rem;
 }
