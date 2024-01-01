@@ -26,6 +26,6 @@ export class AppComponent {
   }
 
   async initSnowEffect() {
-    this.snowFlakes = await SnowfallComponent.initSnowEffect(5);
+    this.snowFlakes = await SnowfallComponent.initSnowEffect(8);
   }
 }

@@ -1,10 +1,11 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import Typewriter from 't-writer.js';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -14,6 +15,23 @@ export class LoginComponent implements OnInit {
   private twEle: ElementRef | any;
   private twriter1: any;
   private twriter2: any;
+  loginForm!: FormGroup;
+
+
+  constructor(private formBuilder: FormBuilder) {
+    this.loginForm = this.formBuilder.group({
+      loginEmail: ['', {
+        validators: [Validators.required, Validators.email],
+        asyncValidators: [],
+        updateOn: 'blur'
+      }],
+      loginPassword: ['', {
+        validators: [Validators.required],
+        asyncValidators: [],
+        updateOn: 'blur'
+      }]
+    });
+  }
 
   ngOnInit(): void {
     this.twEle = document.querySelector('#tw');
@@ -35,6 +53,7 @@ export class LoginComponent implements OnInit {
     this.twriter1 = new Typewriter(this.twEle, tconfig)
     this.twriter2 = new Typewriter(this.twEle, tconfig)
 
+    // initialize the type effect
     this.initTypeEffect();
   }
 
@@ -89,4 +108,20 @@ export class LoginComponent implements OnInit {
       }
     }, 100);
   }
+
+
+  // logical part
+
+  get loginEmail() {
+    return this.loginForm.get('loginUsernameInput');
+  }
+
+  get loginPassword() {
+    return this.loginForm.get('loginPasswordInput');
+  }
+
+  login() {
+    console.log(this.loginForm.value);
+  }
+
 }
