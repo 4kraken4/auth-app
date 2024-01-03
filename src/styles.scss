@@ -1,8 +1,10 @@
 @import "bootstrap/scss/bootstrap";
+// @import "assets/css/ovrd-tostr.scss";
+@import "ngx-toastr/toastr-bs5-alert";
 
 .btn-bd-primary {
   --bd-pri-bg: #1e0a3c;
-  --bd-sec-rgb: #201252;
+  --bd-sec-rgb: #332661;
 
   --bs-btn-font-weight: 600;
   --bs-btn-color: var(--bs-white);
@@ -12,24 +14,111 @@
   --bs-btn-hover-bg: var(--bd-sec-rgb);
   --bs-btn-hover-border-color: var(--bd-sec-rgb);
   --bs-btn-focus-shadow-rgb: var(--bd-sec-rgb);
-  --bs-btn-active-color: #ffba30;
+  --bs-btn-active-color: #ffa800;
   --bs-btn-active-bg: var(--bd-sec-rgb);
   --bs-btn-active-border-color: var(--bd-sec-rgb);
 }
 
 .btn-bd-outline-secondary {
   --bd-pri-bg: #1e0a3c;
-  --bd-sec-rgb: #201252;
+  --bd-sec-rgb: #332661;
 
   --bs-btn-font-weight: 600;
   --bs-btn-color: var(--bd-pri-bg);
   --bs-btn-bg: transparent;
   --bs-btn-border-color: var(--bd-pri-bg);
-  --bs-btn-hover-color: #201252;
   --bs-btn-hover-bg: transparent;
+  --bs-btn-hover-color: var(--bd-sec-rgb);
   --bs-btn-hover-border-color: var(--bd-sec-rgb);
   --bs-btn-focus-shadow-rgb: var(--bd-sec-rgb);
-  --bs-btn-active-color: #ffba30;
-  --bs-btn-active-bg: var(--bd-sec-rgb);
-  --bs-btn-active-border-color: var(--bd-sec-rgb);
+  --bs-btn-active-color: #ffa800;
+  --bs-btn-active-bg: var(--bd-pri-bg);
+  --bs-btn-active-border-color: var(--bd-pri-bg);
+}
+
+// toastr style overrides
+
+@function str-split($string, $separator) {
+  $split-arr: ();
+  // first index of separator in string
+  $index: str-index($string, $separator);
+  // loop through string
+  @while $index != null {
+    // get the substring from the first character to the separator
+    $item: str-slice($string, 1, $index - 1);
+    // push item to array
+    $split-arr: append($split-arr, $item);
+    // remove item and separator from string
+    $string: str-slice($string, $index + 1);
+    // find new index of separator
+    $index: str-index($string, $separator);
+  }
+  // add the remaining string to list (the last item)
+  $split-arr: append($split-arr, $string);
+
+  @return $split-arr;
+}
+
+@function svg-factory($fill-color, $viewbox, $path) {
+  $split: str-split($viewbox, " ");
+  $width: nth($split, 3);
+  $height: nth($split, 4);
+
+  // opacity is 0.9999 otherwise it uses a hex equivelent
+  // firefox requires fill rgb
+  @return "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='" + $viewbox +
+    "' width='" + $width + "' height='" + $height + "'%3E%3Cpath fill='" +
+    rgba($fill-color, 0.999999) + "' d='" + $path + "'/%3E%3C/svg%3E";
+}
+@function svg-encode($svg) {
+  @return "data:image/svg+xml;charset=utf8," + $svg;
+}
+
+.toast-container {
+  top: 4rem !important;
+}
+
+.toast-success {
+  $bd-toast-success: rgb(30, 255, 0);
+
+  background: rgba(255, 255, 255, 0.22);
+  background-image: url(svg-encode(
+    svg-factory(
+      shift-color($bd-toast-success, 6 * $theme-color-interval),
+      "0 0 512 512",
+      "M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"
+    )
+  ));
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+    .backdrop-blur {
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+    }
+  }
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  .toast-title {
+    color: #43e058;
+    font-family: "Poppins", sans-serif;
+    font-size: small;
+  }
+
+  .toast-message {
+    color: #88b990;
+    font-family: "Montserrat", sans-serif;
+    font-size: small;
+  }
+
+  .toast-close-button {
+    color: #ffffff !important;
+  }
+
+  .toast-progress {
+    background-color: #e4e4e4 !important;
+  }
+
+  .toast-success-icon {
+    background-color: #43e058 !important;
+  }
 }

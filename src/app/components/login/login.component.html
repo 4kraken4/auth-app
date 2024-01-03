@@ -19,7 +19,7 @@
     </div>
 
     <div
-      class="d-none d-md-block col-sm-4 col-md-4 col-lg-6 col-xl-6 col-xxl-7"
+      class="d-none d-md-block col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6"
     >
       <div class="twriter-wrapper">
         <div id="tw" class="text-start fw-light"></div>
@@ -29,59 +29,51 @@
       <div class="card form-signin">
         <div class="card-body">
           <main>
-            <form>
+            <form [formGroup]="loginForm" (ngSubmit)="login()">
               <div
                 class="mb-4 justify-content-center align-items-center d-flex"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="96"
-                  viewBox="0 0 325 367"
-                  fill="none"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M192.452 66.7632C161.337 20.9244 62.0033 30.9195 58.1404 124.963C57.5927 138.296 48.1976 146.84 40 150.393V326.119H90.0381C101.084 326.119 110.038 335.073 110.038 346.119C110.038 357.164 101.084 366.119 90.0381 366.119H38.0245C26.5182 366.119 16.9611 362.061 10.169 355.317C3.90011 349.091 0.869366 341.452 0.133257 335.107C0.0444927 334.342 0 333.572 0 332.802V148.747C0 131.944 9.47703 121.751 18.599 116.392C28.826 -8.40038 172.727 -33.5176 225.548 44.2983C231.751 53.4374 229.372 65.8751 220.232 72.0786C211.093 78.2821 198.656 75.9023 192.452 66.7632Z"
-                    fill="#1e0a3c"
-                  />
-                  <path
-                    d="M260.237 293.899L250.496 268.294H167.556L157.815 294.456C154.011 304.661 150.764 311.573 148.074 315.191C145.383 318.716 140.977 320.479 134.854 320.479C129.658 320.479 125.066 318.577 121.077 314.773C117.087 310.97 115.093 306.656 115.093 301.832C115.093 299.048 115.557 296.172 116.484 293.204C117.412 290.235 118.943 286.106 121.077 280.818L173.262 148.338C174.746 144.534 176.509 139.988 178.55 134.7C180.684 129.319 182.91 124.866 185.229 121.341C187.642 117.815 190.75 114.986 194.553 112.852C198.45 110.625 203.228 109.512 208.887 109.512C214.639 109.512 219.417 110.625 223.22 112.852C227.117 114.986 230.225 117.769 232.544 121.202C234.956 124.634 236.951 128.345 238.528 132.334C240.198 136.231 242.285 141.473 244.79 148.06L298.088 279.705C302.263 289.725 304.351 297.007 304.351 301.553C304.351 306.285 302.356 310.645 298.367 314.634C294.47 318.531 289.739 320.479 284.172 320.479C280.925 320.479 278.142 319.876 275.823 318.67C273.503 317.557 271.555 316.026 269.978 314.078C268.401 312.037 266.685 308.975 264.829 304.893C263.066 300.718 261.536 297.054 260.237 293.899ZM178.411 237.261H239.363L208.608 153.069L178.411 237.261Z"
-                    fill="#FFA800"
-                  />
-                  <path
-                    d="M254.696 115.436C250.879 105.959 240.097 101.36 230.615 105.165C230.585 105.177 230.556 105.189 230.527 105.201C228.062 106.204 229.084 109.55 231.529 110.599C235.871 112.462 239.506 115.975 241.41 120.701L310.365 291.902C312.289 296.679 312.077 301.783 310.179 306.159C309.12 308.6 310.67 311.739 313.152 310.782C313.233 310.751 313.313 310.72 313.394 310.687C322.876 306.883 327.469 296.115 323.651 286.638L254.696 115.436Z"
-                    fill="#1e0a3c"
-                  />
-                </svg>
+                <img
+                  src="/assets/auth-app-logo.svg"
+                  alt="app-logo"
+                  class="login-logo mb-3"
+                />
               </div>
               <div class="form-floating">
                 <input
                   type="email"
-                  id="userEmail"
+                  id="loginUsernameInput"
                   placeholder="user@example.com"
+                  formControlName="loginEmail"
                   class="form-control border-bottom-0"
                   (focus)="onFocus()"
                   (blur)="onBlur()"
                 />
-                <label for="userEmail">Email address</label>
-                <div
+                <label for="loginUsernameInput">Email address</label>
+                <!-- <div
+                  *ngIf="
+            loginPassword?.touched && loginPassword?.errors?.['required']"
+                  class="form-text error-feedback"
+                >
+                  <em>Password is required</em>
+                </div> -->
+                <!-- <div
                   class="form-text invalid-feedback px-3 pb-2 my-0 d-none border border-bottom-0 border-top-0"
                 >
                   Use the valid username.
-                </div>
+                </div> -->
               </div>
               <div class="form-floating">
                 <input
                   type="password"
                   class="form-control border-top-0"
-                  id="floatingPassword"
+                  id="loginPasswordInput"
+                  formControlName="loginPassword"
                   placeholder="Password"
                   (focus)="onFocus()"
                   (blur)="onBlur()"
                 />
-                <label for="floatingPassword">Password</label>
+                <label for="loginPasswordInput">Password</label>
               </div>
               <div class="form-check text-start my-3">
                 <input
@@ -94,7 +86,7 @@
                   >Remember me</label
                 >
               </div>
-              <button type="button" class="btn btn-bd-primary w-100 py-2">
+              <button type="submit" class="btn btn-bd-primary w-100 py-2">
                 Sign in
               </button>
               <p class="mt-5 mb-3 text-body-secondary">&copy; 2021–2024</p>
@@ -106,42 +98,20 @@
   </div>
 </div>
 
-<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-  <symbol id="check2" viewBox="0 0 16 16">
-    <path
-      d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"
-    />
-  </symbol>
-  <symbol id="circle-half" viewBox="0 0 16 16">
-    <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z" />
-  </symbol>
-  <symbol id="moon-stars-fill" viewBox="0 0 16 16">
-    <path
-      d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"
-    />
-    <path
-      d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"
-    />
-  </symbol>
-  <symbol id="sun-fill" viewBox="0 0 16 16">
-    <path
-      d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"
-    />
-  </symbol>
-</svg>
-
 <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
   <button
-    class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
+    class="btn btn-primary py-2 dropdown-toggle d-flex align-items-center"
     id="bd-theme"
     type="button"
     aria-expanded="false"
     data-bs-toggle="dropdown"
     aria-label="Toggle theme (auto)"
   >
-    <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
-      <use href="#circle-half"></use>
-    </svg>
+    <img
+      src="/assets/icons/circle-half.svg"
+      alt="icon-half-circle"
+      class="bi my-1 theme-icon-active"
+    />
     <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
   </button>
   <ul
@@ -155,13 +125,17 @@
         data-bs-theme-value="light"
         aria-pressed="false"
       >
-        <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-          <use href="#sun-fill"></use>
-        </svg>
+        <img
+          src="/assets/icons/sun-fill.svg"
+          alt="icon-half"
+          class="bi me-2 opacity-50 theme-icon"
+        />
         Light
-        <svg class="bi ms-auto d-none" width="1em" height="1em">
-          <use href="#check2"></use>
-        </svg>
+        <img
+          src="/assets/icons/check2.svg"
+          alt="icon-check"
+          class="bi ms-auto d-none"
+        />
       </button>
     </li>
     <li>
@@ -171,13 +145,17 @@
         data-bs-theme-value="dark"
         aria-pressed="false"
       >
-        <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-          <use href="#moon-stars-fill"></use>
-        </svg>
+        <img
+          src="/assets/icons/moon-stars-fill.svg"
+          alt="icon-moon-stars"
+          class="bi me-2 opacity-50 theme-icon"
+        />
         Dark
-        <svg class="bi ms-auto d-none" width="1em" height="1em">
-          <use href="#check2"></use>
-        </svg>
+        <img
+          src="/assets/icons/check2.svg"
+          alt="icon-check"
+          class="bi ms-auto d-none"
+        />
       </button>
     </li>
     <li>
@@ -187,13 +165,17 @@
         data-bs-theme-value="auto"
         aria-pressed="true"
       >
-        <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-          <use href="#circle-half"></use>
-        </svg>
+        <img
+          src="/assets/icons/circle-half.svg"
+          alt="icon-half-circle"
+          class="bi me-2 opacity-50 theme-icon"
+        />
         Auto
-        <svg class="bi ms-auto d-none" width="1em" height="1em">
-          <use href="#check2"></use>
-        </svg>
+        <img
+          src="/assets/icons/check2.svg"
+          alt="icon-check"
+          class="bi ms-auto d-none"
+        />
       </button>
     </li>
   </ul>
