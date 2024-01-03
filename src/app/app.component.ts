@@ -14,7 +14,15 @@ import { SnowfallComponent, SnowFlakeConfig } from "./effects/snowfall/snowfall.
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  imports: [CommonModule, RouterOutlet, NavbarComponent, CardComponent, SignupComponent, LoginComponent, SnowfallComponent]
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    NavbarComponent,
+    CardComponent,
+    SignupComponent,
+    LoginComponent,
+    SnowfallComponent
+  ]
 })
 export class AppComponent {
   public snowFlakes: SnowFlakeConfig[] | undefined;

@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import Typewriter from 't-writer.js';
+import { NotificationService } from '../../services/notification/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
 
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private notify: NotificationService) {
     this.loginForm = this.formBuilder.group({
       loginEmail: ['', {
         validators: [Validators.required, Validators.email],
@@ -113,15 +114,17 @@ export class LoginComponent implements OnInit {
   // logical part
 
   get loginEmail() {
-    return this.loginForm.get('loginUsernameInput');
+    return this.loginForm.get('loginEmail');
   }
+
 
   get loginPassword() {
-    return this.loginForm.get('loginPasswordInput');
+    return this.loginForm.get('loginPassword');
   }
 
+
   login() {
-    console.log(this.loginForm.value);
+    this.notify.showSuccess('Login Successful', 'Success')
   }
 
 }
