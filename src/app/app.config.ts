@@ -1,18 +1,20 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, ErrorHandler } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
+import { AuthGuard } from './services/auth-gourd/auth-guard.service';
+import { ErrorHandlerService } from './services/handlers/error-handler.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimations(),
     provideToastr({
-      timeOut: 30000,
-      positionClass: 'toast-top-right',
+      timeOut: 3000,
+      positionClass: 'toast-top-left',
       preventDuplicates: true,
-      closeButton: true,
+      closeButton: false,
       progressBar: false,
       progressAnimation: 'decreasing',
       maxOpened: 3,
@@ -21,8 +23,10 @@ export const appConfig: ApplicationConfig = {
       enableHtml: true,
       easing: 'ease-in',
       easeTime: 300,
-      extendedTimeOut: 1000,
-      tapToDismiss: true
-    })
-  ]
+      extendedTimeOut: 3000,
+      tapToDismiss: true,
+    }),
+    { provide: ErrorHandler, useValue: ErrorHandlerService },
+    AuthGuard,
+  ],
 };

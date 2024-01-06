@@ -3,15 +3,15 @@ import { Observable } from 'rxjs';
 import { CoreService } from '../core/core.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
-  constructor(private coreService: CoreService) { }
+  constructor(private coreService: CoreService) {}
 
   public login(data: any): Observable<any> {
     return new Observable((observer) => {
-      this.coreService.post('/auth/authenticate', data)
+      this.coreService
+        .post('/auth/authenticate', data)
         .then((response) => {
           observer.next(response);
           observer.complete();
@@ -21,5 +21,10 @@ export class AuthService {
           observer.complete();
         });
     });
+  }
+
+  public isAuthenticated(): boolean {
+    const token = localStorage.getItem('token');
+    return token ? true : false;
   }
 }

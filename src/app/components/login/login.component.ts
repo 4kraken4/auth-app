@@ -1,14 +1,20 @@
+import { NgIf } from '@angular/common';
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import Typewriter from 't-writer.js';
-import { NotificationService } from '../../services/notification/notification.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgIf],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
   name = 'Angular';
@@ -17,20 +23,44 @@ export class LoginComponent implements OnInit {
   private twriter1: any;
   private twriter2: any;
   loginForm!: FormGroup;
+  formError = '';
 
-
-  constructor(private formBuilder: FormBuilder, private notify: NotificationService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+  ) {
     this.loginForm = this.formBuilder.group({
-      loginEmail: ['', {
-        validators: [Validators.required, Validators.email],
-        asyncValidators: [],
-        updateOn: 'blur'
-      }],
-      loginPassword: ['', {
-        validators: [Validators.required],
-        asyncValidators: [],
-        updateOn: 'blur'
-      }]
+      loginEmail: [
+        '',
+        {
+          validators: [
+            Validators.required,
+            Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
+          ],
+          asyncValidators: [],
+          updateOn: 'submit',
+        },
+      ],
+      loginPassword: [
+        '',
+        {
+          validators: [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.maxLength(32),
+          ],
+          asyncValidators: [],
+          updateOn: 'submit',
+        },
+      ],
+      loginRememberMe: [
+        false,
+        {
+          validators: [],
+          asyncValidators: [],
+          updateOn: 'submit',
+        },
+      ],
     });
   }
 
@@ -51,8 +81,8 @@ export class LoginComponent implements OnInit {
       typeColor: getComputedStyle(this.twEle).color,
     };
 
-    this.twriter1 = new Typewriter(this.twEle, tconfig)
-    this.twriter2 = new Typewriter(this.twEle, tconfig)
+    this.twriter1 = new Typewriter(this.twEle, tconfig);
+    this.twriter2 = new Typewriter(this.twEle, tconfig);
 
     // initialize the type effect
     this.initTypeEffect();
@@ -91,7 +121,9 @@ export class LoginComponent implements OnInit {
   onFocus() {
     setTimeout(() => {
       let randomInteger = Math.floor(Math.random() * 3);
-      var ele = document.querySelector('.blob-wrapper')?.getElementsByClassName('img-blob');
+      var ele = document
+        .querySelector('.blob-wrapper')
+        ?.getElementsByClassName('img-blob');
       if (ele) {
         ele[randomInteger].classList.add('blob-opacity-inc');
       }
@@ -100,7 +132,9 @@ export class LoginComponent implements OnInit {
 
   onBlur() {
     setTimeout(() => {
-      var ele = document.querySelector('.blob-wrapper')?.getElementsByClassName('img-blob');
+      var ele = document
+        .querySelector('.blob-wrapper')
+        ?.getElementsByClassName('img-blob');
       if (ele) {
         for (let index = 0; index < ele.length; index++) {
           const element = ele[index];
@@ -110,21 +144,113 @@ export class LoginComponent implements OnInit {
     }, 100);
   }
 
-
   // logical part
 
   get loginEmail() {
     return this.loginForm.get('loginEmail');
   }
 
-
   get loginPassword() {
     return this.loginForm.get('loginPassword');
   }
 
-
-  login() {
-    this.notify.showSuccess('Login Successful', 'Success')
+  get loginRememberMe() {
+    return this.loginForm.get('loginRememberMe');
   }
 
+  login(event: Event) {
+    if (this.loginForm.valid) {
+      this.hideErrorMessage();
+      const data = {
+        email: this.loginEmail?.value,
+        password: this.loginPassword?.value,
+        rememberMe: this.loginRememberMe?.value,
+      };
+      this.authService.login(data).subscribe({
+        next: (response) => {
+          console.log(response);
+          if (response.success) {
+            // window.location.href = routes.home;
+          } else {
+            this.decorateError(response.message);
+          }
+        },
+        error: (error) => {
+          throw error;
+        },
+      });
+      return;
+    }
+    this.showErrorMessage();
+  }
+
+  private getErrorMessage() {
+    let message = '';
+
+    if (this.loginForm.get('loginEmail')?.errors) {
+      if (this.loginForm.get('loginEmail')?.errors?.['required']) {
+        message = 'Email is required';
+      } else if (this.loginForm.get('loginEmail')?.errors?.['pattern']) {
+        message = 'Please enter a valid email';
+      }
+    }
+
+    if (this.loginForm.get('loginPassword')?.errors) {
+      if (this.loginForm.get('loginPassword')?.errors?.['required']) {
+        message = 'Password is required';
+      } else if (this.loginForm.get('loginPassword')?.errors?.['minlength']) {
+        message = 'Password must be at least 8 characters long';
+      } else if (this.loginForm.get('loginPassword')?.errors?.['maxlength']) {
+        message = 'Password cannot be more than 32 characters long';
+      }
+    }
+
+    return message;
+  }
+
+  private addShake(element: Element) {
+    element?.classList.add('shake-animation');
+    element?.addEventListener('animationend', () => {
+      element.classList.remove('shake-animation');
+    });
+  }
+
+  private decorateError(error: string) {
+    this.formError = error;
+    const formEle = document.querySelector('.form-signin');
+    formEle?.classList.add('form-error');
+    setTimeout(() => {
+      formEle?.classList.remove('form-error');
+    }, 3000);
+    this.loginForm.get('loginEmail')?.markAsTouched();
+    this.loginForm.get('loginPassword')?.markAsTouched();
+  }
+
+  private showErrorMessage() {
+    this.decorateError(this.getErrorMessage());
+    this.addShake(document.querySelector('.form-signin')!);
+    this.addPopup(document.querySelector('#error')!);
+  }
+
+  private hideErrorMessage() {
+    const errorMessageElement = document.querySelector('#error');
+    this.addPopdown(errorMessageElement!);
+    setTimeout(() => {
+      this.formError = '';
+    }, 500);
+  }
+
+  private addPopup(element: Element) {
+    element?.classList.add('popup-animation');
+    element?.addEventListener('animationend', () => {
+      element.classList.remove('popup-animation');
+    });
+  }
+
+  private addPopdown(element: Element) {
+    element?.classList.add('popout-animation');
+    element?.addEventListener('animationend', () => {
+      element.classList.remove('popout-animation');
+    });
+  }
 }

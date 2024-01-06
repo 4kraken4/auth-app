@@ -29,7 +29,7 @@
       <div class="card form-signin">
         <div class="card-body">
           <main>
-            <form [formGroup]="loginForm" (ngSubmit)="login()">
+            <form [formGroup]="loginForm" (ngSubmit)="login($event)">
               <div
                 class="mb-4 justify-content-center align-items-center d-flex"
               >
@@ -38,6 +38,12 @@
                   alt="app-logo"
                   class="login-logo mb-3"
                 />
+              </div>
+              <div
+                id="error"
+                class="text-center small text-danger text-opacity-75 mb-3"
+              >
+                {{ formError }}
               </div>
               <div class="form-floating">
                 <input
@@ -48,20 +54,10 @@
                   class="form-control border-bottom-0"
                   (focus)="onFocus()"
                   (blur)="onBlur()"
+                  required
+                  autofocus
                 />
                 <label for="loginUsernameInput">Email address</label>
-                <!-- <div
-                  *ngIf="
-            loginPassword?.touched && loginPassword?.errors?.['required']"
-                  class="form-text error-feedback"
-                >
-                  <em>Password is required</em>
-                </div> -->
-                <!-- <div
-                  class="form-text invalid-feedback px-3 pb-2 my-0 d-none border border-bottom-0 border-top-0"
-                >
-                  Use the valid username.
-                </div> -->
               </div>
               <div class="form-floating">
                 <input
@@ -72,6 +68,7 @@
                   placeholder="Password"
                   (focus)="onFocus()"
                   (blur)="onBlur()"
+                  required
                 />
                 <label for="loginPasswordInput">Password</label>
               </div>
@@ -81,6 +78,7 @@
                   class="form-check-input"
                   value="remember-me"
                   id="checkRememberMe"
+                  formControlName="loginRememberMe"
                 />
                 <label for="checkRememberMe" class="form-check-label"
                   >Remember me</label
@@ -89,7 +87,7 @@
               <button type="submit" class="btn btn-bd-primary w-100 py-2">
                 Sign in
               </button>
-              <p class="mt-5 mb-3 text-body-secondary">&copy; 2021–2024</p>
+              <p class="mt-5 mb-3 text-body-secondary">&copy; 2021-2024</p>
             </form>
           </main>
         </div>
