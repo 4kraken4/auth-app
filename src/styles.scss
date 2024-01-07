@@ -1,5 +1,4 @@
 @import "bootstrap/scss/bootstrap";
-// @import "assets/css/ovrd-tostr.scss";
 @import "ngx-toastr/toastr-bs5-alert";
 
 .btn-bd-primary {
@@ -14,7 +13,7 @@
   --bs-btn-hover-bg: var(--bd-sec-rgb);
   --bs-btn-hover-border-color: var(--bd-sec-rgb);
   --bs-btn-focus-shadow-rgb: var(--bd-sec-rgb);
-  --bs-btn-active-color: #ffa800;
+  --bs-btn-active-color: #0c6dfd;
   --bs-btn-active-bg: var(--bd-sec-rgb);
   --bs-btn-active-border-color: var(--bd-sec-rgb);
 }
@@ -31,7 +30,7 @@
   --bs-btn-hover-color: var(--bd-sec-rgb);
   --bs-btn-hover-border-color: var(--bd-sec-rgb);
   --bs-btn-focus-shadow-rgb: var(--bd-sec-rgb);
-  --bs-btn-active-color: #ffa800;
+  --bs-btn-active-color: #0c6dfd;
   --bs-btn-active-bg: var(--bd-pri-bg);
   --bs-btn-active-border-color: var(--bd-pri-bg);
 }
@@ -79,12 +78,12 @@
 }
 
 .toast-success {
-  $bd-toast-success: rgb(30, 255, 0);
+  $bd-toast-success: rgb(67, 224, 88);
 
   background: rgba(255, 255, 255, 0.22);
   background-image: url(svg-encode(
     svg-factory(
-      shift-color($bd-toast-success, 6 * $theme-color-interval),
+      shift-color($bd-toast-success, 2 * $theme-color-interval),
       "0 0 512 512",
       "M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"
     )
@@ -93,8 +92,8 @@
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
     .backdrop-blur {
-      -webkit-backdrop-filter: blur(4px);
-      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px);
     }
   }
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -102,12 +101,14 @@
     color: #43e058;
     font-family: "Poppins", sans-serif;
     font-size: small;
+    padding-left: 1.2rem;
   }
 
   .toast-message {
-    color: #88b990;
+    color: #a8e9b3;
     font-family: "Montserrat", sans-serif;
     font-size: small;
+    padding-left: 1.2rem;
   }
 
   .toast-close-button {
@@ -115,10 +116,88 @@
   }
 
   .toast-progress {
-    background-color: #e4e4e4 !important;
-  }
-
-  .toast-success-icon {
     background-color: #43e058 !important;
   }
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
+}
+
+.shake-animation {
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.form-error {
+  border: 1px solid #ce1b1b !important;
+  box-shadow: inset 0 0 20px #f96969 !important;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes popup {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.popup-animation {
+  animation: popup 0.5s ease-out;
+}
+
+@keyframes popout {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.popout-animation {
+  animation: popout 0.5s ease-in forwards;
 }
