@@ -6,6 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import Typewriter from 't-writer.js';
 import { AuthService } from '../../services/auth/auth.service';
 
@@ -27,7 +28,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.loginForm = this.formBuilder.group({
       loginEmail: [
@@ -168,11 +170,9 @@ export class LoginComponent implements OnInit {
       };
       this.authService.login(data).subscribe({
         next: (response) => {
-          console.log(response);
           if (response.success) {
-            // window.location.href = routes.home;
+            this.router.navigate(['/protected']);
           } else {
-            this.decorateError(response.message);
           }
         },
         error: (error) => {
@@ -185,27 +185,36 @@ export class LoginComponent implements OnInit {
   }
 
   private getErrorMessage() {
-    let message = '';
+    return (
+      this.getFormControlErrorMessage('loginEmail', {
+        required: 'Email is required',
+        pattern: 'Please enter a valid email',
+      }) ||
+      this.getFormControlErrorMessage('loginPassword', {
+        required: 'Password is required',
+        minlength: 'Password must be at least 8 characters long',
+        maxlength: 'Password cannot be more than 32 characters long',
+      }) ||
+      ''
+    );
+  }
 
-    if (this.loginForm.get('loginEmail')?.errors) {
-      if (this.loginForm.get('loginEmail')?.errors?.['required']) {
-        message = 'Email is required';
-      } else if (this.loginForm.get('loginEmail')?.errors?.['pattern']) {
-        message = 'Please enter a valid email';
+  private getFormControlErrorMessage(
+    controlName: string,
+    errorMessages: { [key: string]: string }
+  ) {
+    const control = this.loginForm.get(controlName);
+    if (control?.errors) {
+      for (const errorKey in control.errors) {
+        if (
+          control.errors.hasOwnProperty(errorKey) &&
+          errorMessages[errorKey]
+        ) {
+          return errorMessages[errorKey];
+        }
       }
     }
-
-    if (this.loginForm.get('loginPassword')?.errors) {
-      if (this.loginForm.get('loginPassword')?.errors?.['required']) {
-        message = 'Password is required';
-      } else if (this.loginForm.get('loginPassword')?.errors?.['minlength']) {
-        message = 'Password must be at least 8 characters long';
-      } else if (this.loginForm.get('loginPassword')?.errors?.['maxlength']) {
-        message = 'Password cannot be more than 32 characters long';
-      }
-    }
-
-    return message;
+    return null;
   }
 
   private addShake(element: Element) {
