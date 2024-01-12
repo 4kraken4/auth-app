@@ -23,6 +23,21 @@ export class AuthService {
     });
   }
 
+  public signUp(data: any): Observable<any> {
+    return new Observable((observer) => {
+      this.coreService
+        .post('/auth/register', data)
+        .then((response) => {
+          observer.next(response);
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+          observer.complete();
+        });
+    });
+  }
+
   public isAuthenticated(): boolean {
     const token = localStorage.getItem('token');
     return token ? true : false;

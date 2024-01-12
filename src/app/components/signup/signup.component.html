@@ -1,1 +1,141 @@
-<p>Sign Up works!</p>
+<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="github" viewBox="0 0 48 48">
+    <path
+      d="M24.0199 0C10.7375 0 0 10.8167 0 24.1983C0 34.895 6.87988 43.9495 16.4241 47.1542C17.6174 47.3951 18.0545 46.6335 18.0545 45.9929C18.0545 45.4319 18.0151 43.509 18.0151 41.5055C11.3334 42.948 9.94198 38.6209 9.94198 38.6209C8.86818 35.8164 7.27715 35.0956 7.27715 35.0956C5.09022 33.6132 7.43645 33.6132 7.43645 33.6132C9.86233 33.7735 11.1353 36.0971 11.1353 36.0971C13.2824 39.7827 16.7422 38.7413 18.1341 38.1002C18.3328 36.5377 18.9695 35.456 19.6455 34.8552C14.3163 34.2942 8.70937 32.211 8.70937 22.9161C8.70937 20.2719 9.66321 18.1086 11.1746 16.4261C10.9361 15.8253 10.1008 13.3409 11.4135 10.0157C11.4135 10.0157 13.4417 9.3746 18.0146 12.4996C19.9725 11.9699 21.9916 11.7005 24.0199 11.6982C26.048 11.6982 28.1154 11.979 30.0246 12.4996C34.5981 9.3746 36.6262 10.0157 36.6262 10.0157C37.9389 13.3409 37.1031 15.8253 36.8646 16.4261C38.4158 18.1086 39.3303 20.2719 39.3303 22.9161C39.3303 32.211 33.7234 34.2539 28.3544 34.8552C29.2296 35.6163 29.9848 37.0583 29.9848 39.3421C29.9848 42.5871 29.9454 45.1915 29.9454 45.9924C29.9454 46.6335 30.383 47.3951 31.5758 47.1547C41.12 43.9491 47.9999 34.895 47.9999 24.1983C48.0392 10.8167 37.2624 0 24.0199 0Z"
+      fill="#24292F"
+    />
+  </symbol>
+
+  <symbol id="google" viewBox="0 0 48 48">
+    <path
+      d="M23.9996 19.6363V28.9309H36.916C36.3488 31.9199 34.6468 34.4509 32.0941 36.1527L39.8831 42.1964C44.4213 38.0075 47.0395 31.8547 47.0395 24.5456C47.0395 22.8438 46.8868 21.2073 46.6031 19.6366L23.9996 19.6363Z"
+      fill="#4285F4"
+    />
+    <path
+      d="M10.5494 28.568L8.79263 29.9128L2.57434 34.7564C6.52342 42.589 14.6174 48 23.9991 48C30.4789 48 35.9116 45.8618 39.8826 42.1964L32.0936 36.1528C29.9554 37.5927 27.2281 38.4656 23.9991 38.4656C17.7591 38.4656 12.4575 34.2547 10.5592 28.5819L10.5494 28.568Z"
+      fill="#34A853"
+    />
+    <path
+      d="M2.57436 13.2436C0.938084 16.4726 0 20.1163 0 23.9999C0 27.8834 0.938084 31.5271 2.57436 34.7561C2.57436 34.7777 10.5599 28.5597 10.5599 28.5597C10.08 27.1197 9.79624 25.5925 9.79624 23.9996C9.79624 22.4067 10.08 20.8795 10.5599 19.4395L2.57436 13.2436Z"
+      fill="#FBBC05"
+    />
+    <path
+      d="M23.9996 9.55636C27.5342 9.55636 30.676 10.7781 33.1851 13.1345L40.0577 6.2619C35.8904 2.37833 30.4797 0 23.9996 0C14.6179 0 6.52342 5.38908 2.57434 13.2437L10.5597 19.44C12.4578 13.7672 17.7596 9.55636 23.9996 9.55636Z"
+      fill="#EA4335"
+    />
+  </symbol>
+
+  <symbol id="facebook" viewBox="0 0 48 48">
+    <path
+      d="M48 24C48 10.7453 37.2547 0 24 0C10.7453 0 0 10.7453 0 24C0 35.255 7.74912 44.6995 18.2026 47.2934V31.3344H13.2538V24H18.2026V20.8397C18.2026 12.671 21.8995 8.8848 29.9194 8.8848C31.44 8.8848 34.0637 9.18336 35.137 9.48096V16.129C34.5706 16.0694 33.5866 16.0397 32.3645 16.0397C28.4294 16.0397 26.9088 17.5306 26.9088 21.4061V24H34.7482L33.4013 31.3344H26.9088V47.8243C38.7926 46.3891 48.001 36.2707 48.001 24H48Z"
+      fill="#0866FF"
+    />
+    <path
+      d="M33.4003 31.3344L34.7472 24H26.9078V21.4061C26.9078 17.5306 28.4285 16.0397 32.3635 16.0397C33.5856 16.0397 34.5696 16.0694 35.136 16.129V9.48096C34.0627 9.1824 31.439 8.8848 29.9184 8.8848C21.8986 8.8848 18.2016 12.671 18.2016 20.8397V24H13.2528V31.3344H18.2016V47.2934C20.0582 47.7542 22.0003 48 23.999 48C24.983 48 25.9536 47.9395 26.9069 47.8243V31.3344H33.3994H33.4003Z"
+      fill="white"
+    />
+  </symbol>
+</svg>
+
+<div class="container-fluid bg-secondary-subtle">
+  <div class="container">
+    <div class="row align-items-center" style="height: 94vh">
+      <div class="column col-md-7 col-lg-5 col-xl-5">
+        <div
+          class="card border-transition rounded-4 shadow border border-primary d-block p-4 py-md-5"
+        >
+          <div class="card-body">
+            <h1 class="card-title fw-bold mb-4 fs-2">Sign up for free</h1>
+            <form [formGroup]="signUpForm" (ngSubmit)="signUp($event)">
+              <div class="form-floating mb-3">
+                <input
+                  type="email"
+                  class="form-control rounded-3 border-transition"
+                  id="signUpEmail"
+                  placeholder="name@example.com"
+                  formControlName="signUpEmail"
+                  [ngClass]="this.getFormControlClass('signUpEmail')"
+                />
+                <label for="signUpEmail">Email address</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input
+                  type="password"
+                  class="form-control rounded-3 border-transition"
+                  id="signUpPassword"
+                  placeholder="Password"
+                  formControlName="signUpPassword"
+                  [ngClass]="this.getFormControlClass('signUpPassword')"
+                />
+                <label for="signUpPassword">Password</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input
+                  type="password"
+                  class="form-control rounded-3 border-transition"
+                  id="signUpCnfPassword"
+                  placeholder="Confirm password"
+                  formControlName="signUpCnfPassword"
+                  [ngClass]="this.getFormControlClass('signUpCnfPassword')"
+                />
+                <label for="signUpCnfPassword">Confirm assword</label>
+              </div>
+              <button
+                class="w-100 mb-2 btn btn-lg rounded-3 btn-primary bg-transition"
+                type="submit"
+                [disabled]="loading"
+              >
+                <span
+                  class="spinner-grow spinner-grow-sm me-2"
+                  aria-hidden="true"
+                  *ngIf="loading"
+                ></span>
+                <span role="status">{{
+                  !loading ? "Sign up" : "signing up..."
+                }}</span>
+              </button>
+              <small class="text-body-secondary"
+                >By clicking Sign up, you agree to the terms of use.</small
+              >
+              <hr class="my-3" />
+              <h2 class="fs-5 fw-bold mb-3">Or use a third-party</h2>
+              <button
+                class="w-100 py-2 mb-2 btn btn-outline-primary rounded-3"
+                type="submit"
+              >
+                <svg class="bi me-1" width="24" height="24">
+                  <use xlink:href="#google" />
+                </svg>
+                Sign up with Google
+              </button>
+              <button
+                class="w-100 py-2 mb-2 btn btn-outline-primary rounded-3"
+                type="submit"
+              >
+                <svg class="bi me-1" width="24" height="24">
+                  <use xlink:href="#facebook" />
+                </svg>
+                Sign up with Facebook
+              </button>
+              <button
+                class="w-100 py-2 mb-2 btn btn-outline-primary rounded-3"
+                type="submit"
+              >
+                <svg class="bi me-1" width="24" height="24">
+                  <use xlink:href="#github" />
+                </svg>
+                Sign up with GitHub
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="d-none d-md-block col-md-5 col-lg-7 col-xl-7">
+        <div *ngIf="showTw" class="twriter-wrapper">
+          <div class="text-start" #twElement></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

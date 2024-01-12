@@ -1,0 +1,74 @@
+.bi {
+  vertical-align: -0.25em;
+}
+
+.bd-mode-toggle {
+  z-index: 1500;
+}
+
+.card {
+  width: 380px !important;
+}
+
+@media screen and (max-width: 768px) {
+  .column {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+#tw {
+  font-family: "Montserrat", sans-serif;
+}
+
+.twriter-wrapper {
+  color: #1a084bec;
+  font-size: 6rem !important;
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+
+  $breakpoints: 1676px 5rem, 1400px 4.3rem, 1200px 3.4rem, 992px 2.2rem;
+
+  @each $breakpoint, $font-size in $breakpoints {
+    @media (max-width: $breakpoint) {
+      div {
+        font-size: $font-size;
+      }
+    }
+  }
+
+  @media (max-width: 992px) {
+    div {
+      line-height: 1.6;
+      letter-spacing: 0.1em;
+      font-weight: 400;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    div {
+      line-height: 1.4;
+    }
+  }
+}
+
+.spinner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  border-radius: var(--bs-border-radius-xl);
+}
+
+.bg-transition {
+  transition: background-color 0.3s ease-in-out;
+}

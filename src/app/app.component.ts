@@ -30,7 +30,7 @@ export class AppComponent {
   title = 'auth-app';
 
   constructor() {
-    this.initSnowEffect();
+    // this.initSnowEffect();
   }
 
   async initSnowEffect() {
