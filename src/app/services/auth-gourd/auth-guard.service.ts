@@ -1,21 +1,27 @@
-import { Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  Router,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 
-export function authGuardFactory(
-  authService: AuthService,
-  router: Router
-): () => Promise<boolean> {
-  return async () => {
-    const isAuthenticated = authService.isAuthenticated();
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthGuard implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
+
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean | UrlTree {
+    const isAuthenticated = this.authService.isAuthenticated();
     if (!isAuthenticated) {
-      router.navigate(['/login']);
+      this.router.navigate(['login']);
     }
     return isAuthenticated;
-  };
+  }
 }
-
-export const AuthGuard = {
-  provide: 'AuthGuard',
-  useFactory: authGuardFactory,
-  deps: [AuthService, Router],
-};
