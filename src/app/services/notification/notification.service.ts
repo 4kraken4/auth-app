@@ -8,7 +8,7 @@ export class NotificationService {
   constructor(private toast: ToastrService) {}
 
   success(message: string, title: string) {
-    this.toast.success(message, title, { progressBar: true });
+    this.toast.success(message, title);
   }
 
   error(message: string, title: string) {
@@ -24,6 +24,6 @@ export class NotificationService {
   }
 
   custom(message: string, title: string) {
-    this.toast.show(message, title, { progressBar: true });
+    this.toast.show(message, title);
   }
 }

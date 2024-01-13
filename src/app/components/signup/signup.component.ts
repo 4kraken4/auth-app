@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   HostListener,
+  Renderer2,
   ViewChild,
 } from '@angular/core';
 import {
@@ -13,10 +14,16 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
 import Typewriter from 't-writer.js';
 import { AuthService } from '../../services/auth/auth.service';
 import { NotificationService } from '../../services/notification/notification.service';
 
+interface ErrorMessages {
+  [key: string]: {
+    [key: string]: string;
+  };
+}
 @Component({
   selector: 'app-signup',
   standalone: true,
@@ -30,7 +37,25 @@ export class SignupComponent implements AfterViewChecked {
     this.showTw = event.target.innerWidth > 768;
   }
   @ViewChild('twElement') twEle!: ElementRef;
+  @ViewChild('signUpEmailInput') signUpEmailInput!: ElementRef;
+  @ViewChild('signUpPasswordInput') signUpPasswordInput!: ElementRef;
+  @ViewChild('signUpCnfPasswordInput') signUpCnfPasswordInput!: ElementRef;
 
+  private errorMessages: ErrorMessages = {
+    signUpEmail: {
+      required: 'Email is required',
+      pattern: 'Please enter a valid email',
+    },
+    signUpPassword: {
+      required: 'Password is required',
+      minlength: 'Password must be at least 8 characters long',
+      maxlength: 'Password cannot be more than 32 characters long',
+    },
+    signUpCnfPassword: {
+      required: 'Password must be confirmed',
+      mismatch: 'Passwords do not match',
+    },
+  };
   signUpForm: FormGroup;
   formError: any;
   showTw: boolean = true;
@@ -41,7 +66,8 @@ export class SignupComponent implements AfterViewChecked {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private notify: NotificationService
+    private notify: NotificationService,
+    private renderer: Renderer2
   ) {
     this.signUpForm = this.formBuilder.group(
       {
@@ -141,70 +167,72 @@ export class SignupComponent implements AfterViewChecked {
 
   sendSignUpRequest(data: { email: string; password: string }) {
     this.loading = true;
-    this.authService.signUp(data).subscribe({
-      next: (response) => {
-        if (response.success) {
-          this.formSubmitted = false;
-        } else {
-          this.formError = response.message;
-          this.loading = false;
-          this.notify.success(response.message, 'Error');
-        }
-      },
-      error: (error) => {
-        this.loading = false;
-        this.notify.error(error.message, 'Error');
-        throw error;
-      },
-    });
+    this.authService
+      .signUp(data)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.formSubmitted = false;
+          } else {
+            this.formError = response.message;
+            this.notify.error(response.message, 'error');
+          }
+        },
+        error: (error) => {
+          this.notify.error(error.message, 'error');
+          throw error;
+        },
+      });
   }
 
   signUp($event: any) {
     this.formSubmitted = true;
 
-    if (!this.signUpForm.valid) {
+    if (this.signUpForm.invalid) {
+      this.focusErrorElement();
       return;
     }
 
     this.formError = null;
     const data = this.getFormData();
-
     this.sendSignUpRequest(data);
   }
 
   // Design functions
 
-  private getErrorMessage() {
-    return (
-      this.getFormControlErrorMessage('signUpEmail', {
-        required: 'Email is required',
-        pattern: 'Please enter a valid email',
-      }) ||
-      this.getFormControlErrorMessage('signUpPassword', {
-        required: 'Password is required',
-        minlength: 'Password must be at least 8 characters long',
-        maxlength: 'Password cannot be more than 32 characters long',
-      }) ||
-      this.getFormControlErrorMessage('signUpCnfPassword', {
-        required: 'Password must be confirmed',
-        mismatch: 'Passwords do not match',
-      }) ||
-      ''
-    );
+  private focusErrorElement() {
+    const inputElements: { [key: string]: ElementRef } = {
+      signUpEmail: this.signUpEmailInput,
+      signUpPassword: this.signUpPasswordInput,
+      signUpCnfPassword: this.signUpCnfPasswordInput,
+    };
+
+    for (const key of Object.keys(this.signUpForm.controls)) {
+      const control = this.signUpForm.controls[key];
+      if (control.invalid) {
+        const invalidControl = inputElements[key];
+        if (invalidControl) {
+          this.renderer.selectRootElement(invalidControl.nativeElement).focus();
+          const errorMessage = this.getErrorMessage(key);
+          if (errorMessage) {
+          }
+          break;
+        }
+      }
+    }
   }
 
-  private getFormControlErrorMessage(
-    controlName: string,
-    errorMessages: { [key: string]: string }
-  ): string | null {
-    const control = this.signUpForm.get(controlName);
-    const controlErrorKey =
-      control?.errors &&
-      Object.keys(control.errors).find((key) => errorMessages[key]);
-    const formErrorKey =
-      this.signUpForm.errors &&
-      Object.keys(this.signUpForm.errors).find((key) => errorMessages[key]);
-    return errorMessages[controlErrorKey || formErrorKey || ''] || null;
+  private getErrorMessage(controlName: string) {
+    const controlErrors = this.signUpForm.get(controlName)?.errors;
+    if (controlErrors) {
+      const errorKey = Object.keys(controlErrors)[0];
+      const errorMessages = this.errorMessages[controlName];
+      if (errorMessages && errorKey in errorMessages) {
+        return errorMessages[errorKey];
+      }
+    }
+    return '';
   }
 
   getFormControlClass(controlName: string): string {
