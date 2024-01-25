@@ -1,6 +1,7 @@
 import { NgClass, NgIf } from '@angular/common';
 import {
   AfterViewChecked,
+  AfterViewInit,
   Component,
   ElementRef,
   HostListener,
@@ -16,6 +17,7 @@ import {
 } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import Typewriter from 't-writer.js';
+import { BootstrapTooltipDirective } from '../../../bs-tooltip.directive';
 import { AuthService } from '../../services/auth/auth.service';
 import { NotificationService } from '../../services/notification/notification.service';
 
@@ -24,14 +26,17 @@ interface ErrorMessages {
     [key: string]: string;
   };
 }
+
+declare var bootstrap: any;
+
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, NgClass],
+  imports: [ReactiveFormsModule, NgIf, NgClass, BootstrapTooltipDirective],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
-export class SignupComponent implements AfterViewChecked {
+export class SignupComponent implements AfterViewChecked, AfterViewInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.showTw = event.target.innerWidth > 768;
@@ -78,6 +83,16 @@ export class SignupComponent implements AfterViewChecked {
       { validators: this.passwordMatchValidator, updateOn: 'submit' }
     );
   }
+
+  ngAfterViewInit(): void {
+    var tooltipTriggerList = [].slice.call(
+      document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    );
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  }
+
   ngAfterViewChecked(): void {
     if (
       this.showTw &&
@@ -293,10 +308,10 @@ export class SignupComponent implements AfterViewChecked {
       blinkSpeed: 400,
       typeSpeed: 'random',
       deleteSpeed: 'random',
-      typeSpeedMin: 80,
-      typeSpeedMax: 130,
-      deleteSpeedMin: 90,
-      deleteSpeedMax: 130,
+      typeSpeedMin: 110,
+      typeSpeedMax: 150,
+      deleteSpeedMin: 110,
+      deleteSpeedMax: 150,
       cursorClass: 'cursor-span',
       cursorColor: '#FFA800',
       typeColor: getComputedStyle(this.twEle.nativeElement).color,
