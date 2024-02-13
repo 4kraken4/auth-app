@@ -288,3 +288,62 @@
   box-shadow: inset 0 0 3px #5afd83 !important;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+// tooltip style overrides
+
+$tooltips: (
+  custom: (
+    #041625,
+    #3ab7ff,
+  ),
+  error-custom: (
+    #290411,
+    #ff1965,
+  ),
+  success-custom: (
+    #032916,
+    #19ff8c,
+  ),
+);
+
+@each $tooltip, $colors in $tooltips {
+  .tooltip-#{$tooltip} .tooltip-inner {
+    background-color: nth($colors, 1);
+    color: nth($colors, 2);
+    opacity: 1 !important;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300 !important;
+    font-size: smaller;
+  }
+
+  .tooltip-#{$tooltip}.bs-tooltip-right .tooltip-arrow::before {
+    border-right-color: nth($colors, 1) !important;
+  }
+  .tooltip-#{$tooltip}.bs-tooltip-left .tooltip-arrow::before {
+    border-left-color: nth($colors, 1) !important;
+  }
+  .tooltip-#{$tooltip}.bs-tooltip-bottom .tooltip-arrow::before {
+    border-bottom-color: nth($colors, 1) !important;
+  }
+  .tooltip-#{$tooltip}.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: nth($colors, 1) !important;
+  }
+}
+
+.bs-tooltip-top .tooltip-inner,
+.bs-tooltip-bottom .tooltip-inner {
+  opacity: 0;
+  transform: scale(0.6);
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.bs-tooltip-top.show .tooltip-inner,
+.bs-tooltip-bottom.show .tooltip-inner {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.full-screen {
+  height: 94vh;
+  width: 100%;
+}
