@@ -18,7 +18,7 @@ import { finalize } from 'rxjs/operators';
 import Typewriter from 't-writer.js';
 import { BootstrapTooltipDirective } from '../../../bs-tooltip.directive';
 import { AuthService } from '../../services/auth/auth.service';
-import { NotificationService } from '../../services/notification/notification.service';
+import { NotificationService } from '../../services/handlers/notification/notification.service';
 
 interface ErrorMessages {
   [key: string]: {
