@@ -188,7 +188,6 @@ export class SignupComponent implements AfterViewChecked {
   }
 
   signUp($event: any) {
-    // console.log(this.signUpForm);
     this.signingUp = true;
     this.handleInputErrors();
     if (!this.isFormError()) {
