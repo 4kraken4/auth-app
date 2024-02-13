@@ -60,7 +60,7 @@ export class SignupComponent implements AfterViewChecked {
   };
   signUpForm: FormGroup;
   showTw: boolean = true;
-  formSubmitted: boolean = false;
+  signingUp: boolean = false;
   loading: boolean = false;
   private twInitialized = false;
 
@@ -175,7 +175,7 @@ export class SignupComponent implements AfterViewChecked {
       .subscribe({
         next: (response) => {
           if (response.success) {
-            this.formSubmitted = false;
+            this.signingUp = false;
           } else {
             this.notify.error(response.message, 'error');
           }
@@ -189,7 +189,7 @@ export class SignupComponent implements AfterViewChecked {
 
   signUp($event: any) {
     // console.log(this.signUpForm);
-    this.formSubmitted = true;
+    this.signingUp = true;
     this.handleInputErrors();
     if (!this.isFormError()) {
       this.sendSignUpRequest(this.getFormData());
@@ -228,7 +228,7 @@ export class SignupComponent implements AfterViewChecked {
   }
 
   isFormError(): boolean {
-    return this.signUpForm.invalid && this.formSubmitted;
+    return this.signUpForm.invalid && this.signingUp;
   }
 
   handleInputErrors() {
@@ -301,7 +301,7 @@ export class SignupComponent implements AfterViewChecked {
       return '';
     }
 
-    if (this.formSubmitted && control.invalid) {
+    if (this.signingUp && control.invalid) {
       return 'form-control-danger';
     }
 
