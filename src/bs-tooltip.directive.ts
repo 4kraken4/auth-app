@@ -7,9 +7,7 @@ declare var bootstrap: any;
   selector: '[bsTooltip]',
 })
 export class BootstrapTooltipDirective implements AfterViewInit {
-  constructor(private el: ElementRef, private renderer: Renderer2) {
-    console.log('BootstrapTooltipDirective constructor');
-  }
+  constructor(private el: ElementRef, private renderer: Renderer2) {}
 
   ngAfterViewInit(): void {
     this.renderer.setAttribute(
@@ -17,28 +15,17 @@ export class BootstrapTooltipDirective implements AfterViewInit {
       'data-bs-toggle',
       'tooltip'
     );
-    this.renderer.setAttribute(
-      this.el.nativeElement,
-      'data-bs-placement',
-      'top'
-    );
-    this.renderer.setAttribute(this.el.nativeElement, 'data-bs-html', 'true');
-    this.renderer.setAttribute(
-      this.el.nativeElement,
-      'data-bs-trigger',
-      'hover'
-    );
-    this.renderer.setAttribute(this.el.nativeElement, 'data-bs-delay', '300');
-    this.renderer.setAttribute(
-      this.el.nativeElement,
-      'data-bs-animation',
-      'true'
-    );
-    // this.renderer.setAttribute(
-    //   this.el.nativeElement,
-    //   'data-bs-custom-class',
-    //   'tooltip-custom'
-    // );
-    return new bootstrap.Tooltip(this.el.nativeElement);
+
+    const tooltip = new bootstrap.Tooltip(this.el.nativeElement, {
+      boundary: 'window',
+      delay: { show: 400, hide: 200 },
+      animation: true,
+      html: true,
+      trigger: 'hover',
+      placement: 'top',
+      customClass: 'tooltip-error-custom',
+    });
+
+    return tooltip;
   }
 }

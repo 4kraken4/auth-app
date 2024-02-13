@@ -1,7 +1,6 @@
 import { NgClass, NgIf } from '@angular/common';
 import {
   AfterViewChecked,
-  AfterViewInit,
   Component,
   ElementRef,
   HostListener,
@@ -27,8 +26,6 @@ interface ErrorMessages {
   };
 }
 
-declare var bootstrap: any;
-
 @Component({
   selector: 'app-signup',
   standalone: true,
@@ -36,7 +33,7 @@ declare var bootstrap: any;
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
-export class SignupComponent implements AfterViewChecked, AfterViewInit {
+export class SignupComponent implements AfterViewChecked {
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.showTw = event.target.innerWidth > 768;
@@ -62,7 +59,6 @@ export class SignupComponent implements AfterViewChecked, AfterViewInit {
     },
   };
   signUpForm: FormGroup;
-  formError: any;
   showTw: boolean = true;
   formSubmitted: boolean = false;
   loading: boolean = false;
@@ -82,15 +78,6 @@ export class SignupComponent implements AfterViewChecked, AfterViewInit {
       },
       { validators: this.passwordMatchValidator, updateOn: 'submit' }
     );
-  }
-
-  ngAfterViewInit(): void {
-    var tooltipTriggerList = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    );
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
   }
 
   ngAfterViewChecked(): void {
@@ -190,7 +177,6 @@ export class SignupComponent implements AfterViewChecked, AfterViewInit {
           if (response.success) {
             this.formSubmitted = false;
           } else {
-            this.formError = response.message;
             this.notify.error(response.message, 'error');
           }
         },
@@ -202,46 +188,104 @@ export class SignupComponent implements AfterViewChecked, AfterViewInit {
   }
 
   signUp($event: any) {
+    // console.log(this.signUpForm);
     this.formSubmitted = true;
-
-    if (this.signUpForm.invalid) {
-      this.focusErrorElement();
-      return;
+    this.handleInputErrors();
+    if (!this.isFormError()) {
+      this.sendSignUpRequest(this.getFormData());
     }
-
-    this.formError = null;
-    const data = this.getFormData();
-    this.sendSignUpRequest(data);
   }
 
   // Design functions
 
   private focusErrorElement() {
-    const inputElements: { [key: string]: ElementRef } = {
-      signUpEmail: this.signUpEmailInput,
-      signUpPassword: this.signUpPasswordInput,
-      signUpCnfPassword: this.signUpCnfPasswordInput,
-    };
+    const invalidControl = this.getErrorControl();
+    if (invalidControl) {
+      this.renderer.selectRootElement(invalidControl?.nativeElement).focus();
+    }
+  }
 
+  renderErrorTooltip(controlRef: ElementRef, msg: string) {
+    return this.renderer.setAttribute(
+      controlRef.nativeElement,
+      'data-bs-original-title',
+      msg
+    );
+  }
+
+  getErrorControl(): ElementRef | null {
+    const inputElements = this.getControlElements();
     for (const key of Object.keys(this.signUpForm.controls)) {
       const control = this.signUpForm.controls[key];
       if (control.invalid) {
         const invalidControl = inputElements[key];
         if (invalidControl) {
-          this.renderer.selectRootElement(invalidControl.nativeElement).focus();
-          const errorMessage = this.getErrorMessage(key);
-          if (errorMessage) {
-          }
-          break;
+          return invalidControl;
         }
+      }
+    }
+    return null;
+  }
+
+  isFormError(): boolean {
+    return this.signUpForm.invalid && this.formSubmitted;
+  }
+
+  handleInputErrors() {
+    this.focusErrorElement();
+    for (const controlName of Object.keys(this.signUpForm.controls)) {
+      const controlRef = this.getControlElement(controlName);
+      if (controlRef) {
+        if (this.containsError(controlName) || this.isFormError()) {
+          const errorMessage = this.getErrorMessageForControl(controlName);
+          this.renderErrorTooltip(controlRef, errorMessage);
+          continue;
+        }
+        this.removeExistingTooltip(controlRef);
       }
     }
   }
 
-  private getErrorMessage(controlName: string) {
+  removeExistingTooltip(controlRef: ElementRef) {
+    this.renderer.removeAttribute(
+      controlRef.nativeElement,
+      'data-bs-original-title'
+    );
+  }
+
+  containsError(controlName: string): boolean {
+    const control = this.signUpForm.get(controlName);
+    return control ? control.invalid : false;
+  }
+
+  getControlElement(controlName: string): ElementRef | null {
+    const inputElements = this.getControlElements();
+    return inputElements[controlName];
+  }
+
+  getControlElements(): { [key: string]: ElementRef } {
+    return {
+      signUpEmail: this.signUpEmailInput,
+      signUpPassword: this.signUpPasswordInput,
+      signUpCnfPassword: this.signUpCnfPasswordInput,
+    };
+  }
+
+  getFormControlName(elementRef: ElementRef): string {
+    return elementRef.nativeElement.getAttribute('formControlName');
+  }
+
+  private getErrorMessageForControl(controlName: string) {
     const controlErrors = this.signUpForm.get(controlName)?.errors;
     if (controlErrors) {
       const errorKey = Object.keys(controlErrors)[0];
+      const errorMessages = this.errorMessages[controlName];
+      if (errorMessages && errorKey in errorMessages) {
+        return errorMessages[errorKey];
+      }
+    }
+    if (!controlErrors && this.signUpForm.errors) {
+      const errorKey = Object.keys(this.signUpForm.errors)[0];
       const errorMessages = this.errorMessages[controlName];
       if (errorMessages && errorKey in errorMessages) {
         return errorMessages[errorKey];
@@ -253,13 +297,23 @@ export class SignupComponent implements AfterViewChecked, AfterViewInit {
   getFormControlClass(controlName: string): string {
     const control = this.signUpForm.get(controlName);
 
-    return control && this.formSubmitted && control.invalid
-      ? 'form-control-danger'
-      : control && control.dirty && control.valid
-      ? controlName === 'signUpCnfPassword' && this.signUpForm.invalid
-        ? 'form-control-danger'
-        : 'form-control-success'
-      : '';
+    if (!control) {
+      return '';
+    }
+
+    if (this.formSubmitted && control.invalid) {
+      return 'form-control-danger';
+    }
+
+    if (control.dirty && control.valid) {
+      if (controlName === 'signUpCnfPassword' && this.signUpForm.invalid) {
+        return 'form-control-danger';
+      } else {
+        return 'form-control-success';
+      }
+    }
+
+    return '';
   }
 
   private initTypeEffect() {

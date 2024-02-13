@@ -15,11 +15,9 @@ export class ErrorHandlerService extends ErrorHandler {
 
     this.zone.run(() => {
       if (error instanceof HttpErrorResponse) {
-        // Handle HTTP error
-        notifier.showError(error.message, 'An HTTP error occurred');
+        notifier.error(error.message, 'An HTTP error occurred');
       } else {
-        // Handle client error
-        notifier.showError(error.message, 'An error occurred');
+        notifier.error(error.message, 'An error occurred');
       }
     });
 
