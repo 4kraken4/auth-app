@@ -19,6 +19,7 @@ import Typewriter from 't-writer.js';
 import { BootstrapTooltipDirective } from '../../../bs-tooltip.directive';
 import { AuthService } from '../../services/auth/auth.service';
 import { NotificationService } from '../../services/handlers/notification/notification.service';
+import { PasswordStrengthService } from '../../services/handlers/userinput/password-strength.service';
 
 interface ErrorMessages {
   [key: string]: {
@@ -42,6 +43,8 @@ export class SignupComponent implements AfterViewChecked {
   @ViewChild('signUpEmailInput') signUpEmailInput!: ElementRef;
   @ViewChild('signUpPasswordInput') signUpPasswordInput!: ElementRef;
   @ViewChild('signUpCnfPasswordInput') signUpCnfPasswordInput!: ElementRef;
+
+  passwordStrength = 0;
 
   private errorMessages: ErrorMessages = {
     signUpEmail: {
@@ -68,6 +71,7 @@ export class SignupComponent implements AfterViewChecked {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private notify: NotificationService,
+    private pss: PasswordStrengthService,
     private renderer: Renderer2
   ) {
     this.signUpForm = this.formBuilder.group(
@@ -187,11 +191,27 @@ export class SignupComponent implements AfterViewChecked {
       });
   }
 
+  checkPasswordStrenth($event: any) {
+    this.passwordStrength =
+      this.pss.calculatePasswordStregnth($event.target.value) * 25;
+  }
+
+  progerssBarColor() {
+    return this.passwordStrength < 50
+      ? 'bg-danger'
+      : this.passwordStrength < 75
+      ? 'bg-warning'
+      : this.passwordStrength < 100
+      ? 'bg-info'
+      : 'bg-success';
+  }
+
   signUp($event: any) {
     this.signingUp = true;
     this.handleInputErrors();
     if (!this.isFormError()) {
-      this.sendSignUpRequest(this.getFormData());
+      const data = this.getFormData();
+      this.sendSignUpRequest(data);
     }
   }
 

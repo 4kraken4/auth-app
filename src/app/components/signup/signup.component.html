@@ -70,11 +70,23 @@
                   class="form-control rounded-3 border-transition"
                   id="signUpPassword"
                   placeholder="Password"
+                  (input)="checkPasswordStrenth($event)"
                   formControlName="signUpPassword"
                   [ngClass]="this.getFormControlClass('signUpPassword')"
                   bsTooltip
                 />
                 <label for="signUpPassword">Password</label>
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    title="Password strength"
+                    role="progressbar"
+                    [style.width.%]="passwordStrength"
+                    [ngClass]="progerssBarColor()"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
               </div>
 
               <div class="form-floating mb-3">
