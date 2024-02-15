@@ -18,7 +18,8 @@ import { finalize } from 'rxjs/operators';
 import Typewriter from 't-writer.js';
 import { BootstrapTooltipDirective } from '../../../bs-tooltip.directive';
 import { AuthService } from '../../services/auth/auth.service';
-import { NotificationService } from '../../services/notification/notification.service';
+import { NotificationService } from '../../services/handlers/notification/notification.service';
+import { PasswordStrengthService } from '../../services/handlers/userinput/password-strength.service';
 
 interface ErrorMessages {
   [key: string]: {
@@ -43,6 +44,9 @@ export class SignupComponent implements AfterViewChecked {
   @ViewChild('signUpPasswordInput') signUpPasswordInput!: ElementRef;
   @ViewChild('signUpCnfPasswordInput') signUpCnfPasswordInput!: ElementRef;
 
+  passwordStrength = 0;
+  passwordVisible: Boolean = false;
+
   private errorMessages: ErrorMessages = {
     signUpEmail: {
       required: 'Email is required',
@@ -60,7 +64,7 @@ export class SignupComponent implements AfterViewChecked {
   };
   signUpForm: FormGroup;
   showTw: boolean = true;
-  formSubmitted: boolean = false;
+  signingUp: boolean = false;
   loading: boolean = false;
   private twInitialized = false;
 
@@ -68,6 +72,7 @@ export class SignupComponent implements AfterViewChecked {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private notify: NotificationService,
+    private pss: PasswordStrengthService,
     private renderer: Renderer2
   ) {
     this.signUpForm = this.formBuilder.group(
@@ -175,7 +180,7 @@ export class SignupComponent implements AfterViewChecked {
       .subscribe({
         next: (response) => {
           if (response.success) {
-            this.formSubmitted = false;
+            this.signingUp = false;
           } else {
             this.notify.error(response.message, 'error');
           }
@@ -187,12 +192,27 @@ export class SignupComponent implements AfterViewChecked {
       });
   }
 
+  checkPasswordStrenth($event: any) {
+    this.passwordStrength =
+      this.pss.calculatePasswordStregnth($event.target.value) * 25;
+  }
+
+  progerssBarColor() {
+    return this.passwordStrength < 50
+      ? 'bg-danger'
+      : this.passwordStrength < 75
+      ? 'bg-warning'
+      : this.passwordStrength < 100
+      ? 'bg-info'
+      : 'bg-success';
+  }
+
   signUp($event: any) {
-    // console.log(this.signUpForm);
-    this.formSubmitted = true;
+    this.signingUp = true;
     this.handleInputErrors();
     if (!this.isFormError()) {
-      this.sendSignUpRequest(this.getFormData());
+      const data = this.getFormData();
+      this.sendSignUpRequest(data);
     }
   }
 
@@ -228,7 +248,19 @@ export class SignupComponent implements AfterViewChecked {
   }
 
   isFormError(): boolean {
-    return this.signUpForm.invalid && this.formSubmitted;
+    return this.signUpForm.invalid && this.signingUp;
+  }
+
+  onPasswordBlur() {
+    document.getElementById('progressbar')?.classList.add('opacity-0');
+  }
+
+  onPasswordFocus() {
+    document.getElementById('progressbar')?.classList.remove('opacity-0');
+  }
+
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
   }
 
   handleInputErrors() {
@@ -301,7 +333,7 @@ export class SignupComponent implements AfterViewChecked {
       return '';
     }
 
-    if (this.formSubmitted && control.invalid) {
+    if (this.signingUp && control.invalid) {
       return 'form-control-danger';
     }
 

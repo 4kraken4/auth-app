@@ -292,17 +292,25 @@
 // tooltip style overrides
 
 $tooltips: (
+  default: (
+    #252525,
+    #e8f4ff,
+  ),
+  error: (
+    #29030d,
+    #ff397b,
+  ),
+  success: (
+    #032916,
+    #19ff8c,
+  ),
+  info: (
+    #0a0329,
+    #3ab7ff,
+  ),
   custom: (
     #041625,
     #3ab7ff,
-  ),
-  error-custom: (
-    #290411,
-    #ff1965,
-  ),
-  success-custom: (
-    #032916,
-    #19ff8c,
   ),
 );
 
@@ -312,8 +320,10 @@ $tooltips: (
     color: nth($colors, 2);
     opacity: 1 !important;
     font-family: "Poppins", sans-serif;
+    text-align: start;
     font-weight: 300 !important;
     font-size: smaller;
+    box-shadow: 0 0 8px rgba(3, 23, 49, 0.1) !important;
   }
 
   .tooltip-#{$tooltip}.bs-tooltip-right .tooltip-arrow::before {
@@ -330,20 +340,23 @@ $tooltips: (
   }
 }
 
-.bs-tooltip-top .tooltip-inner,
-.bs-tooltip-bottom .tooltip-inner {
-  opacity: 0;
-  transform: scale(0.6);
-  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-}
+// .bs-tooltip-top .tooltip-inner,
+// .bs-tooltip-bottom .tooltip-inner {
+//   opacity: 0;
+//   transform: scale(0.6);
+//   transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+// }
 
-.bs-tooltip-top.show .tooltip-inner,
-.bs-tooltip-bottom.show .tooltip-inner {
-  opacity: 1;
-  transform: scale(1);
-}
+// .bs-tooltip-top.show .tooltip-inner,
+// .bs-tooltip-bottom.show .tooltip-inner {
+//   opacity: 1;
+//   transform: scale(1);
+// }
 
 .full-screen {
   height: 94vh;
-  width: 100%;
+}
+
+.pe-4rem {
+  padding-right: 4rem !important;
 }
