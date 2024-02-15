@@ -59,7 +59,7 @@
                   placeholder="name@example.com"
                   formControlName="signUpEmail"
                   [ngClass]="this.getFormControlClass('signUpEmail')"
-                  bsTooltip
+                  bsTooltip="error"
                 />
                 <label for="signUpEmail">Email address</label>
               </div>
@@ -73,10 +73,11 @@
                   (input)="checkPasswordStrenth($event)"
                   formControlName="signUpPassword"
                   [ngClass]="this.getFormControlClass('signUpPassword')"
-                  bsTooltip
+                  bsTooltip="error"
                 />
                 <label for="signUpPassword">Password</label>
-                <div class="progress">
+
+                <div class="progress" id="progressbar">
                   <div
                     class="progress-bar"
                     title="Password strength"
@@ -98,9 +99,9 @@
                   placeholder="Confirm password"
                   formControlName="signUpCnfPassword"
                   [ngClass]="this.getFormControlClass('signUpCnfPassword')"
-                  bsTooltip
+                  bsTooltip="error"
                 />
-                <label for="signUpCnfPassword">Confirm assword</label>
+                <label for="signUpCnfPassword">Confirm password</label>
               </div>
               <button
                 class="w-100 mb-2 btn btn-lg rounded-3 btn-primary bg-transition"
