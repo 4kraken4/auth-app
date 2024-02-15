@@ -109,3 +109,17 @@
   border-bottom-right-radius: 0.25rem;
   transition: 0.1s ease-in-out;
 }
+
+.password-field-utilities {
+  position: absolute;
+  top: 1rem;
+  left: 82%;
+  z-index: 1000;
+  // width: 4rem !important;
+}
+
+.password-field-utilities img {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}

@@ -45,6 +45,7 @@ export class SignupComponent implements AfterViewChecked {
   @ViewChild('signUpCnfPasswordInput') signUpCnfPasswordInput!: ElementRef;
 
   passwordStrength = 0;
+  passwordVisible: Boolean = false;
 
   private errorMessages: ErrorMessages = {
     signUpEmail: {
@@ -248,6 +249,18 @@ export class SignupComponent implements AfterViewChecked {
 
   isFormError(): boolean {
     return this.signUpForm.invalid && this.signingUp;
+  }
+
+  onPasswordBlur() {
+    document.getElementById('progressbar')?.classList.add('opacity-0');
+  }
+
+  onPasswordFocus() {
+    document.getElementById('progressbar')?.classList.remove('opacity-0');
+  }
+
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
   }
 
   handleInputErrors() {

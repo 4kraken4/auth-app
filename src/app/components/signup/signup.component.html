@@ -66,16 +66,49 @@
               <div class="form-floating mb-3">
                 <input
                   #signUpPasswordInput
-                  type="password"
-                  class="form-control rounded-3 border-transition"
+                  [type]="passwordVisible ? 'text' : 'password'"
+                  class="form-control pe-4rem rounded-3 border-transition"
                   id="signUpPassword"
+                  maxlength="32em"
                   placeholder="Password"
+                  (blur)="onPasswordBlur()"
+                  (focus)="onPasswordFocus()"
                   (input)="checkPasswordStrenth($event)"
                   formControlName="signUpPassword"
                   [ngClass]="this.getFormControlClass('signUpPassword')"
                   bsTooltip="error"
                 />
                 <label for="signUpPassword">Password</label>
+
+                <div class="row password-field-utilities">
+                  <div class="col-1 d-flex justify-content-center">
+                    <span
+                      class=""
+                      (click)="togglePasswordVisibility()"
+                      bsTooltip="info"
+                      title="Toggle visibility"
+                    >
+                      <img
+                        *ngIf="passwordVisible"
+                        src="assets/icons/eye.svg"
+                        alt="password-help" />
+                      <img
+                        *ngIf="!passwordVisible"
+                        src="assets/icons/eye-off.svg"
+                        alt="password-help"
+                    /></span>
+                  </div>
+                  <div class="col-1 d-flex justify-content-center">
+                    <span
+                      class=""
+                      bsTooltip="default"
+                      title="Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character"
+                      ><img
+                        src="assets/icons/help-circle.svg"
+                        alt="password-help"
+                    /></span>
+                  </div>
+                </div>
 
                 <div class="progress" id="progressbar">
                   <div
@@ -94,6 +127,7 @@
                 <input
                   #signUpCnfPasswordInput
                   type="password"
+                  maxlength="32em"
                   class="form-control rounded-3 border-transition"
                   id="signUpCnfPassword"
                   placeholder="Confirm password"
