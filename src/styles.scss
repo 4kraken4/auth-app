@@ -354,7 +354,7 @@ $tooltips: (
 // }
 
 .full-screen {
-  height: 94vh;
+  height: calc(100vh - 3.5rem); // 3.5rem is the height of the navbar
 }
 
 .pe-4rem {

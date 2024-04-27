@@ -40,7 +40,10 @@
 <div
   class="bg-overlay position-fixed full-screen align-items-center justify-content-center d-flex"
 ></div>
-<div class="container-fluid bacground">
+<div
+  class="container-fluid background-transition"
+  [ngClass]="this.getBackgroundClass()"
+>
   <div class="container">
     <div class="row align-items-center full-screen">
       <div class="column col-md-7 col-lg-5 col-xl-5">
