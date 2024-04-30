@@ -24,11 +24,12 @@
 }
 
 .twriter-wrapper {
-  color: rgba(38, 21, 83, 0.9);
+  color: hwb(215 86% 5% / 0.298);
   font-size: 6rem !important;
   line-height: 1.2;
   font-weight: 400;
   letter-spacing: 0.1em;
+  mix-blend-mode: normal;
 
   $breakpoints: 1676px 5rem, 1400px 4.3rem, 1200px 3.4rem, 992px 2.2rem;
 
@@ -73,8 +74,20 @@
   transition: background-color 0.3s ease-in-out;
 }
 
-.bacground {
-  background: #e9e9f0;
+.background{
+  background: #000428;
+  background: -webkit-linear-gradient(to left, #004e92, #000428);
+  background: linear-gradient(to left, #004e92, #000428);
+}
+
+.background-error{
+  background: #C04848;
+  background: -webkit-linear-gradient(to left, #480048, #C04848);
+  background: linear-gradient(to left, #480048, #C04848);
+}
+
+.background-transition {
+  transition: background-color 0.3s ease-in-out;
 }
 
 .bg-overlay {

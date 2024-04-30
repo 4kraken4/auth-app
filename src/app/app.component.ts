@@ -30,10 +30,10 @@ export class AppComponent {
   title = 'auth-app';
 
   constructor() {
-    // this.initSnowEffect();
+    this.initSnowEffect();
   }
 
   async initSnowEffect() {
-    this.snowFlakes = await SnowfallComponent.initSnowEffect(8);
+    this.snowFlakes = await SnowfallComponent.initSnowEffect(15);
   }
 }

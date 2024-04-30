@@ -1,6 +1,7 @@
 import { NgClass, NgIf } from '@angular/common';
 import {
   AfterViewChecked,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   HostListener,
@@ -33,6 +34,7 @@ interface ErrorMessages {
   imports: [ReactiveFormsModule, NgIf, NgClass, BootstrapTooltipDirective],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignupComponent implements AfterViewChecked {
   @HostListener('window:resize', ['$event'])
@@ -344,8 +346,14 @@ export class SignupComponent implements AfterViewChecked {
         return 'form-control-success';
       }
     }
-
     return '';
+  }
+
+  getBackgroundClass(): string {
+    if (this.signingUp && this.signUpForm.invalid) {
+      return 'background-error';
+    }
+    return 'background';
   }
 
   private initTypeEffect() {
