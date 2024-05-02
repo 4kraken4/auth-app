@@ -71,10 +71,10 @@ export class SnowfallComponent implements OnChanges {
     this.flakeOpacity = depthConfig[this.depth].flakeOpacity;
   }
 
-  public static initSnowEffect(instances: number): Promise<any[]> {
+  public static initSnowEffect(instances: number): Promise<SnowFlakeConfig[]> {
     return new Promise(resolve => {
       setTimeout(() => {
-        const snowFlakes: any[] = [];
+        const snowFlakes: SnowFlakeConfig[] = [];
         for (let i = 0; i <= instances; i++) {
           snowFlakes.push({
             depth: this.randRange(1, 5),

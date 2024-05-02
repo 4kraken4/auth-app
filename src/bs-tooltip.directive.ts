@@ -27,7 +27,7 @@ interface TooltipConfig {
 export class BootstrapTooltipDirective implements AfterViewInit {
   @Input('appBsTooltip') type: string = '';
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {}
+  constructor(private el: ElementRef, private renderer: Renderer2) { }
 
   ngAfterViewInit(): void {
     this.renderer.setAttribute(

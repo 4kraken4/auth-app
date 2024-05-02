@@ -20,8 +20,6 @@ import { AuthService } from '../../services/auth/auth.service';
 export class LoginComponent implements AfterViewInit {
   name = 'Angular';
   @ViewChild('tw') twEle: ElementRef | undefined;
-  private twriter1: Typewriter | undefined;
-  private twriter2: Typewriter | undefined;
   loginForm!: FormGroup;
   formError = '';
 
@@ -66,30 +64,21 @@ export class LoginComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const tconfig = {
-      loop: false,
-      addCursor: true,
-      blinkSpeed: 400,
-      typeSpeed: 'random',
-      deleteSpeed: 'random',
-      typeSpeedMin: 80,
-      typeSpeedMax: 130,
-      deleteSpeedMin: 90,
-      deleteSpeedMax: 130,
-      cursorClass: 'cursor-span',
-      cursorColor: '#FFA800',
-      typeColor: getComputedStyle(this.twEle?.nativeElement).color
-    };
-
-    this.twriter1 = new Typewriter(this.twEle?.nativeElement, tconfig);
-    this.twriter2 = new Typewriter(this.twEle?.nativeElement, tconfig);
-
     // initialize the type effect
     this.initTypeEffect();
   }
 
   initTypeEffect() {
-    this.twriter1
+    const twriter1 = new Typewriter(
+      this.twEle?.nativeElement,
+      JSON.parse(this.getTwConfig())
+    );
+    const twriter2 = new Typewriter(
+      this.twEle?.nativeElement,
+      JSON.parse(this.getTwConfig())
+    );
+
+    twriter1
       ?.rest(1500)
       .type('Authentication ')
       .rest(350)
@@ -98,10 +87,10 @@ export class LoginComponent implements AfterViewInit {
       .removeCursor()
       .type('now ')
       .rest(300)
-      .then(() => this.twriter2?.start())
+      .then(twriter2?.start.bind(twriter2))
       .start();
 
-    this.twriter2
+    twriter2
       ?.changeTypeColor('#FFA800')
       .type(' easier.')
       .rest(500)
@@ -115,11 +104,24 @@ export class LoginComponent implements AfterViewInit {
       .rest(1500)
       .clear()
       .removeCursor()
-      .then(() => {
-        if (this.twriter1) {
-          this.twriter1.start.bind(this.twriter1);
-        }
-      });
+      .then(twriter1?.start.bind(twriter1));
+  }
+
+  private getTwConfig(): string {
+    return JSON.stringify({
+      loop: false,
+      addCursor: true,
+      blinkSpeed: 400,
+      typeSpeed: 'random',
+      deleteSpeed: 'random',
+      typeSpeedMin: 110,
+      typeSpeedMax: 150,
+      deleteSpeedMin: 110,
+      deleteSpeedMax: 150,
+      cursorClass: 'cursor-span',
+      cursorColor: '#FFA800',
+      typeColor: getComputedStyle(this.twEle?.nativeElement).color
+    });
   }
 
   onFocus() {

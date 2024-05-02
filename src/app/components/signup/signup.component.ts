@@ -38,8 +38,8 @@ interface ErrorMessages {
 })
 export class SignupComponent implements AfterViewChecked {
   @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.showTw = event.target.innerWidth > 768;
+  onResize(event: Event) {
+    this.showTw = (event.target as Window).innerWidth > 768;
   }
   @ViewChild('twElement') twEle!: ElementRef;
   @ViewChild('signUpEmailInput') signUpEmailInput!: ElementRef;
@@ -194,22 +194,24 @@ export class SignupComponent implements AfterViewChecked {
       });
   }
 
-  checkPasswordStrenth($event: any) {
+  checkPasswordStrenth($event: Event) {
     this.passwordStrength =
-      this.pss.calculatePasswordStregnth($event.target.value) * 25;
+      this.pss.calculatePasswordStregnth(
+        ($event.target as HTMLInputElement).value
+      ) * 25;
   }
 
   progerssBarColor() {
     return this.passwordStrength < 50
       ? 'bg-danger'
       : this.passwordStrength < 75
-      ? 'bg-warning'
-      : this.passwordStrength < 100
-      ? 'bg-info'
-      : 'bg-success';
+        ? 'bg-warning'
+        : this.passwordStrength < 100
+          ? 'bg-info'
+          : 'bg-success';
   }
 
-  signUp($event: any) {
+  signUp($event: Event) {
     $event.preventDefault();
     this.signingUp = true;
     this.handleInputErrors();
@@ -376,7 +378,7 @@ export class SignupComponent implements AfterViewChecked {
       .removeCursor()
       .type('got ')
       .rest(300)
-      .then(tw2.start.bind(tw2))
+      .then(tw2?.start.bind(tw2))
       .start();
 
     tw2
@@ -393,7 +395,7 @@ export class SignupComponent implements AfterViewChecked {
       .rest(1500)
       .clear()
       .removeCursor()
-      .then(tw1.start.bind(tw1));
+      .then(tw1?.start.bind(tw1));
   }
 
   private getTwConfig(): string {
