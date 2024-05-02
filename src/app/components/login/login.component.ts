@@ -20,8 +20,8 @@ import { AuthService } from '../../services/auth/auth.service';
 export class LoginComponent implements AfterViewInit {
   name = 'Angular';
   @ViewChild('tw') twEle: ElementRef | undefined;
-  private twriter1: any;
-  private twriter2: any;
+  private twriter1: Typewriter | undefined;
+  private twriter2: Typewriter | undefined;
   loginForm!: FormGroup;
   formError = '';
 
@@ -90,7 +90,7 @@ export class LoginComponent implements AfterViewInit {
 
   initTypeEffect() {
     this.twriter1
-      .rest(1500)
+      ?.rest(1500)
       .type('Authentication ')
       .rest(350)
       .type('is ')
@@ -98,11 +98,11 @@ export class LoginComponent implements AfterViewInit {
       .removeCursor()
       .type('now ')
       .rest(300)
-      .then(this.twriter2.start.bind(this.twriter2))
+      .then(() => this.twriter2?.start())
       .start();
 
     this.twriter2
-      .changeTypeColor('#FFA800')
+      ?.changeTypeColor('#FFA800')
       .type(' easier.')
       .rest(500)
       .remove(' easier.'.length)
@@ -115,7 +115,11 @@ export class LoginComponent implements AfterViewInit {
       .rest(1500)
       .clear()
       .removeCursor()
-      .then(this.twriter1.start.bind(this.twriter1));
+      .then(() => {
+        if (this.twriter1) {
+          this.twriter1.start.bind(this.twriter1);
+        }
+      });
   }
 
   onFocus() {

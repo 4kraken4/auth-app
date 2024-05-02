@@ -6,14 +6,14 @@ import {
   ElementRef,
   HostListener,
   Renderer2,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import Typewriter from 't-writer.js';
@@ -34,7 +34,7 @@ interface ErrorMessages {
   imports: [ReactiveFormsModule, NgIf, NgClass, BootstrapTooltipDirective],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SignupComponent implements AfterViewChecked {
   @HostListener('window:resize', ['$event'])
@@ -47,22 +47,22 @@ export class SignupComponent implements AfterViewChecked {
   @ViewChild('signUpCnfPasswordInput') signUpCnfPasswordInput!: ElementRef;
 
   passwordStrength = 0;
-  passwordVisible: Boolean = false;
+  passwordVisible: boolean = false;
 
   private errorMessages: ErrorMessages = {
     signUpEmail: {
       required: 'Email is required',
-      pattern: 'Please enter a valid email',
+      pattern: 'Please enter a valid email'
     },
     signUpPassword: {
       required: 'Password is required',
       minlength: 'Password must be at least 8 characters long',
-      maxlength: 'Password cannot be more than 32 characters long',
+      maxlength: 'Password cannot be more than 32 characters long'
     },
     signUpCnfPassword: {
       required: 'Password must be confirmed',
-      mismatch: 'Passwords do not match',
-    },
+      mismatch: 'Passwords do not match'
+    }
   };
   signUpForm: FormGroup;
   showTw: boolean = true;
@@ -81,7 +81,7 @@ export class SignupComponent implements AfterViewChecked {
       {
         signUpEmail: this.emailFormControl(),
         signUpPassword: this.passwordFormControl(),
-        signUpCnfPassword: this.passwordConfirmFormControl(),
+        signUpCnfPassword: this.passwordConfirmFormControl()
       },
       { validators: this.passwordMatchValidator, updateOn: 'submit' }
     );
@@ -106,11 +106,11 @@ export class SignupComponent implements AfterViewChecked {
       {
         validators: [
           Validators.required,
-          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$')
         ],
         asyncValidators: [],
-        updateOn: 'submit',
-      },
+        updateOn: 'submit'
+      }
     ];
   }
 
@@ -121,11 +121,11 @@ export class SignupComponent implements AfterViewChecked {
         validators: [
           Validators.required,
           Validators.minLength(8),
-          Validators.maxLength(32),
+          Validators.maxLength(32)
         ],
         asyncValidators: [],
-        updateOn: 'submit',
-      },
+        updateOn: 'submit'
+      }
     ];
   }
 
@@ -135,8 +135,8 @@ export class SignupComponent implements AfterViewChecked {
       {
         validators: [Validators.required],
         asyncValidators: [],
-        updateOn: 'submit',
-      },
+        updateOn: 'submit'
+      }
     ];
   }
 
@@ -170,7 +170,7 @@ export class SignupComponent implements AfterViewChecked {
   getFormData() {
     return {
       email: this.signUpEmail?.value,
-      password: this.signUpPassword?.value,
+      password: this.signUpPassword?.value
     };
   }
 
@@ -180,17 +180,17 @@ export class SignupComponent implements AfterViewChecked {
       .signUp(data)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
-        next: (response) => {
+        next: response => {
           if (response.success) {
             this.signingUp = false;
           } else {
             this.notify.error(response.message, 'error');
           }
         },
-        error: (error) => {
+        error: error => {
           this.notify.error(error.message, 'error');
           throw error;
-        },
+        }
       });
   }
 
@@ -210,6 +210,7 @@ export class SignupComponent implements AfterViewChecked {
   }
 
   signUp($event: any) {
+    $event.preventDefault();
     this.signingUp = true;
     this.handleInputErrors();
     if (!this.isFormError()) {
@@ -301,7 +302,7 @@ export class SignupComponent implements AfterViewChecked {
     return {
       signUpEmail: this.signUpEmailInput,
       signUpPassword: this.signUpPasswordInput,
-      signUpCnfPassword: this.signUpCnfPasswordInput,
+      signUpCnfPassword: this.signUpCnfPasswordInput
     };
   }
 
@@ -408,7 +409,7 @@ export class SignupComponent implements AfterViewChecked {
       deleteSpeedMax: 150,
       cursorClass: 'cursor-span',
       cursorColor: '#FFA800',
-      typeColor: getComputedStyle(this.twEle.nativeElement).color,
+      typeColor: getComputedStyle(this.twEle.nativeElement).color
     });
   }
 }

@@ -62,7 +62,7 @@
                   placeholder="name@example.com"
                   formControlName="signUpEmail"
                   [ngClass]="this.getFormControlClass('signUpEmail')"
-                  bsTooltip="error"
+                  appBsTooltip="error"
                 />
                 <label for="signUpEmail">Email address</label>
               </div>
@@ -79,22 +79,24 @@
                   (input)="checkPasswordStrenth($event)"
                   formControlName="signUpPassword"
                   [ngClass]="this.getFormControlClass('signUpPassword')"
-                  bsTooltip="error"
+                  appBsTooltip="error"
                 />
                 <label for="signUpPassword">Password</label>
 
                 <div class="row password-field-utilities">
                   <div class="col-1 d-flex justify-content-center">
                     <span
+                      tabindex="0"
                       class=""
                       (click)="togglePasswordVisibility()"
-                      bsTooltip="info"
+                      (keydown.enter)="togglePasswordVisibility()"
+                      appBsTooltip="info"
                       title="Toggle visibility"
                     >
                       <img
                         *ngIf="passwordVisible"
                         src="assets/icons/eye.svg"
-                        alt="password-help" />
+                        alt="password-help"/>
                       <img
                         *ngIf="!passwordVisible"
                         src="assets/icons/eye-off.svg"
@@ -104,7 +106,7 @@
                   <div class="col-1 d-flex justify-content-center">
                     <span
                       class=""
-                      bsTooltip="default"
+                      appBsTooltip="default"
                       title="Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character"
                       ><img
                         src="assets/icons/help-circle.svg"
@@ -136,7 +138,7 @@
                   placeholder="Confirm password"
                   formControlName="signUpCnfPassword"
                   [ngClass]="this.getFormControlClass('signUpCnfPassword')"
-                  bsTooltip="error"
+                  appBsTooltip="error"
                 />
                 <label for="signUpCnfPassword">Confirm password</label>
               </div>

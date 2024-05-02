@@ -3,10 +3,10 @@ import {
   Directive,
   ElementRef,
   Input,
-  Renderer2,
+  Renderer2
 } from '@angular/core';
 
-declare var bootstrap: any;
+declare const bootstrap: any;
 
 interface TooltipConfig {
   boundary: string;
@@ -22,10 +22,10 @@ interface TooltipConfig {
 }
 @Directive({
   standalone: true,
-  selector: '[bsTooltip]',
+  selector: '[appBsTooltip]'
 })
 export class BootstrapTooltipDirective implements AfterViewInit {
-  @Input('bsTooltip') type: string = '';
+  @Input('appBsTooltip') type: string = '';
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
@@ -60,7 +60,7 @@ export class BootstrapTooltipDirective implements AfterViewInit {
       html: true,
       trigger: 'hover',
       placement: 'top',
-      customClass: 'tooltip-' + this.type,
+      customClass: 'tooltip-' + this.type
     };
   }
 

@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges
+} from '@angular/core';
 
 export interface SnowFlakeConfig {
   depth: number;
@@ -9,16 +14,14 @@ export interface SnowFlakeConfig {
 @Component({
   selector: 'app-snowfall',
   standalone: true,
-  inputs: ["depth", "speed"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   templateUrl: './snowfall.component.html',
   styleUrl: './snowfall.component.scss'
 })
-export class SnowfallComponent {
-
-  public depth: number;
-  public speed: number;
+export class SnowfallComponent implements OnChanges {
+  @Input() depth: number;
+  @Input() speed: number;
 
   public flakeOpacity: number;
   public flakeSize: number;
@@ -40,20 +43,24 @@ export class SnowfallComponent {
   }
 
   public ngOnChanges(): void {
-    const speedConfig: { [key: number]: { verticalDuration: number; horizontalDuration: number } } = {
+    const speedConfig: {
+      [key: number]: { verticalDuration: number; horizontalDuration: number };
+    } = {
       1: { verticalDuration: 5, horizontalDuration: 3 },
       2: { verticalDuration: 6, horizontalDuration: 3 },
       3: { verticalDuration: 8, horizontalDuration: 3.5 },
       4: { verticalDuration: 10, horizontalDuration: 4 },
-      5: { verticalDuration: 15, horizontalDuration: 5 },
+      5: { verticalDuration: 15, horizontalDuration: 5 }
     };
 
-    const depthConfig: { [key: number]: { flakeSize: number; flakeOpacity: number } } = {
+    const depthConfig: {
+      [key: number]: { flakeSize: number; flakeOpacity: number };
+    } = {
       1: { flakeSize: 1, flakeOpacity: 1 },
       2: { flakeSize: 2, flakeOpacity: 1 },
       3: { flakeSize: 3, flakeOpacity: 0.9 },
       4: { flakeSize: 5, flakeOpacity: 0.5 },
-      5: { flakeSize: 10, flakeOpacity: 0.2 },
+      5: { flakeSize: 10, flakeOpacity: 0.2 }
     };
 
     this.verticalDuration = speedConfig[this.speed].verticalDuration;
@@ -67,7 +74,7 @@ export class SnowfallComponent {
   public static initSnowEffect(instances: number): Promise<any[]> {
     return new Promise(resolve => {
       setTimeout(() => {
-        let snowFlakes: any[] = [];
+        const snowFlakes: any[] = [];
         for (let i = 0; i <= instances; i++) {
           snowFlakes.push({
             depth: this.randRange(1, 5),
@@ -81,8 +88,7 @@ export class SnowfallComponent {
   }
 
   public static randRange(min: number, max: number): number {
-    let range = (max - min);
-    return (min + Math.round(Math.random() * range));
+    const range = max - min;
+    return min + Math.round(Math.random() * range);
   }
-
 }
