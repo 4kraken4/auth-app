@@ -22,7 +22,7 @@
       class="d-none d-md-block col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6"
     >
       <div class="twriter-wrapper">
-        <div id="tw" class="text-start fw-light"></div>
+        <div class="text-start fw-light" #tw></div>
       </div>
     </div>
     <div class="col-auto">
@@ -55,7 +55,6 @@
                   (focus)="onFocus()"
                   (blur)="onBlur()"
                   required
-                  autofocus
                 />
                 <label for="loginUsernameInput">Email address</label>
               </div>

@@ -1,10 +1,10 @@
 import { NgIf } from '@angular/common';
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import Typewriter from 't-writer.js';
@@ -15,12 +15,11 @@ import { AuthService } from '../../services/auth/auth.service';
   standalone: true,
   imports: [ReactiveFormsModule, NgIf],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements AfterViewInit {
   name = 'Angular';
-
-  private twEle: ElementRef | any;
+  @ViewChild('tw') twEle: ElementRef | undefined;
   private twriter1: any;
   private twriter2: any;
   loginForm!: FormGroup;
@@ -37,11 +36,11 @@ export class LoginComponent implements OnInit {
         {
           validators: [
             Validators.required,
-            Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
+            Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$')
           ],
           asyncValidators: [],
-          updateOn: 'submit',
-        },
+          updateOn: 'submit'
+        }
       ],
       loginPassword: [
         '',
@@ -49,25 +48,24 @@ export class LoginComponent implements OnInit {
           validators: [
             Validators.required,
             Validators.minLength(8),
-            Validators.maxLength(32),
+            Validators.maxLength(32)
           ],
           asyncValidators: [],
-          updateOn: 'submit',
-        },
+          updateOn: 'submit'
+        }
       ],
       loginRememberMe: [
         false,
         {
           validators: [],
           asyncValidators: [],
-          updateOn: 'submit',
-        },
-      ],
+          updateOn: 'submit'
+        }
+      ]
     });
   }
 
-  ngOnInit(): void {
-    this.twEle = document.querySelector('#tw');
+  ngAfterViewInit(): void {
     const tconfig = {
       loop: false,
       addCursor: true,
@@ -80,11 +78,11 @@ export class LoginComponent implements OnInit {
       deleteSpeedMax: 130,
       cursorClass: 'cursor-span',
       cursorColor: '#FFA800',
-      typeColor: getComputedStyle(this.twEle).color,
+      typeColor: getComputedStyle(this.twEle?.nativeElement).color
     };
 
-    this.twriter1 = new Typewriter(this.twEle, tconfig);
-    this.twriter2 = new Typewriter(this.twEle, tconfig);
+    this.twriter1 = new Typewriter(this.twEle?.nativeElement, tconfig);
+    this.twriter2 = new Typewriter(this.twEle?.nativeElement, tconfig);
 
     // initialize the type effect
     this.initTypeEffect();
@@ -122,8 +120,8 @@ export class LoginComponent implements OnInit {
 
   onFocus() {
     setTimeout(() => {
-      let randomInteger = Math.floor(Math.random() * 3);
-      var ele = document
+      const randomInteger = Math.floor(Math.random() * 3);
+      const ele = document
         .querySelector('.blob-wrapper')
         ?.getElementsByClassName('img-blob');
       if (ele) {
@@ -134,7 +132,7 @@ export class LoginComponent implements OnInit {
 
   onBlur() {
     setTimeout(() => {
-      var ele = document
+      const ele = document
         .querySelector('.blob-wrapper')
         ?.getElementsByClassName('img-blob');
       if (ele) {
@@ -161,23 +159,25 @@ export class LoginComponent implements OnInit {
   }
 
   login(event: Event) {
+    event.preventDefault();
     if (this.loginForm.valid) {
       this.hideErrorMessage();
       const data = {
         email: this.loginEmail?.value,
         password: this.loginPassword?.value,
-        rememberMe: this.loginRememberMe?.value,
+        rememberMe: this.loginRememberMe?.value
       };
       this.authService.login(data).subscribe({
-        next: (response) => {
+        next: response => {
           if (response.success) {
             this.router.navigate(['/protected']);
           } else {
+            console.error(response.message);
           }
         },
-        error: (error) => {
+        error: error => {
           throw error;
-        },
+        }
       });
       return;
     }
@@ -188,12 +188,12 @@ export class LoginComponent implements OnInit {
     return (
       this.getFormControlErrorMessage('loginEmail', {
         required: 'Email is required',
-        pattern: 'Please enter a valid email',
+        pattern: 'Please enter a valid email'
       }) ||
       this.getFormControlErrorMessage('loginPassword', {
         required: 'Password is required',
         minlength: 'Password must be at least 8 characters long',
-        maxlength: 'Password cannot be more than 32 characters long',
+        maxlength: 'Password cannot be more than 32 characters long'
       }) ||
       ''
     );
@@ -206,10 +206,7 @@ export class LoginComponent implements OnInit {
     const control = this.loginForm.get(controlName);
     if (control?.errors) {
       for (const errorKey in control.errors) {
-        if (
-          control.errors.hasOwnProperty(errorKey) &&
-          errorMessages[errorKey]
-        ) {
+        if (control.errors && errorMessages[errorKey]) {
           return errorMessages[errorKey];
         }
       }
