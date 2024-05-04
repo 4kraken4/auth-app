@@ -8,7 +8,9 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import Typewriter from 't-writer.js';
+import AuthRequest from '../../models/auth.request.model';
 import { AuthService } from '../../services/auth/auth.service';
+import { NotificationService } from '../../services/handlers/notification/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +28,8 @@ export class LoginComponent implements AfterViewInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private notify: NotificationService
   ) {
     this.loginForm = this.formBuilder.group({
       loginEmail: [
@@ -168,21 +171,21 @@ export class LoginComponent implements AfterViewInit {
     event.preventDefault();
     if (this.loginForm.valid) {
       this.hideErrorMessage();
-      const data = {
-        email: this.loginEmail?.value,
-        password: this.loginPassword?.value,
-        rememberMe: this.loginRememberMe?.value
-      };
+      const data = new AuthRequest(
+        this.loginEmail?.value,
+        this.loginPassword?.value,
+        this.loginRememberMe?.value
+      );
       this.authService.login(data).subscribe({
         next: response => {
           if (response.success) {
             this.router.navigate(['/protected']);
           } else {
-            console.error(response.message);
+            this.notify.error(response.message, 'error');
           }
         },
         error: error => {
-          throw error;
+          this.notify.error(error.message, 'error');
         }
       });
       return;

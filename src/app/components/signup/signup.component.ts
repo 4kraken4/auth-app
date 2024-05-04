@@ -18,6 +18,7 @@ import {
 import { finalize } from 'rxjs/operators';
 import Typewriter from 't-writer.js';
 import { BootstrapTooltipDirective } from '../../../bs-tooltip.directive';
+import RegisterRequest from '../../models/auth.register.request';
 import { AuthService } from '../../services/auth/auth.service';
 import { NotificationService } from '../../services/handlers/notification/notification.service';
 import { PasswordStrengthService } from '../../services/handlers/userinput/password-strength.service';
@@ -167,14 +168,17 @@ export class SignupComponent implements AfterViewChecked {
     return null;
   }
 
-  getFormData() {
-    return {
-      email: this.signUpEmail?.value,
-      password: this.signUpPassword?.value
-    };
+  getFormData(): RegisterRequest {
+    return new RegisterRequest(
+      this.signUpEmail?.value,
+      this.signUpPassword?.value,
+      '',
+      '',
+      ''
+    );
   }
 
-  sendSignUpRequest(data: { email: string; password: string }) {
+  sendSignUpRequest(data: RegisterRequest) {
     this.loading = true;
     this.authService
       .signUp(data)
@@ -189,7 +193,6 @@ export class SignupComponent implements AfterViewChecked {
         },
         error: error => {
           this.notify.error(error.message, 'error');
-          throw error;
         }
       });
   }

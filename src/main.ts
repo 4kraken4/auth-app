@@ -10,4 +10,4 @@ bootstrapApplication(AppComponent, appConfig)
     }
     (window as any)['ngRef'] = ref;
   })
-  .catch((err) => console.error(err));
+  .catch();
